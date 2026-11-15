@@ -1,0 +1,61 @@
+{
+  "passed": true,
+  "viewports": [
+    {
+      "width": 1440,
+      "overflow": false,
+      "sections": 3,
+      "json": true,
+      "sliders": true,
+      "archives": true,
+      "search": true,
+      "images": true
+    },
+    {
+      "width": 1024,
+      "overflow": false,
+      "sections": 3,
+      "json": true,
+      "sliders": true,
+      "archives": true,
+      "search": true,
+      "images": true
+    },
+    {
+      "width": 768,
+      "overflow": false,
+      "sections": 3,
+      "json": true,
+      "sliders": true,
+      "archives": true,
+      "search": true,
+      "images": true
+    },
+    {
+      "width": 390,
+      "overflow": false,
+      "sections": 3,
+      "json": true,
+      "sliders": true,
+      "archives": true,
+      "search": true,
+      "images": true
+    },
+    {
+      "width": 360,
+      "overflow": false,
+      "sections": 3,
+      "json": true,
+      "sliders": true,
+      "archives": true,
+      "search": true,
+      "images": true
+    }
+  ],
+  "projectSubpath": true,
+  "jsonExtension": true,
+  "telegramContent": true,
+  "eventArchiving": true,
+  "posterContain": true,
+  "browserErrors": []
+}

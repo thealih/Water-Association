@@ -1,0 +1,211 @@
+{
+  "channel": "https://t.me/IRWWA94",
+  "retrievedAt": "2026-11-15",
+  "assets": [
+    {
+      "postId": 523,
+      "sourceUrl": "https://t.me/IRWWA94/523",
+      "publishedAt": "2026-11-04T17:09:39+00:00",
+      "image": "assets/images/telegram/523.jpg",
+      "downloadedAt": "2026-11-15"
+    },
+    {
+      "postId": 520,
+      "sourceUrl": "https://t.me/IRWWA94/520",
+      "publishedAt": "2026-10-07T17:46:50+00:00",
+      "image": "assets/images/telegram/520.jpg",
+      "downloadedAt": "2026-11-15"
+    },
+    {
+      "postId": 519,
+      "sourceUrl": "https://t.me/IRWWA94/519",
+      "publishedAt": "2026-10-02T20:56:38+00:00",
+      "image": "assets/images/telegram/519.jpg",
+      "downloadedAt": "2026-11-15"
+    },
+    {
+      "postId": 518,
+      "sourceUrl": "https://t.me/IRWWA94/518",
+      "publishedAt": "2026-10-01T11:50:00+00:00",
+      "image": "assets/images/telegram/518.jpg",
+      "downloadedAt": "2026-11-15"
+    },
+    {
+      "postId": 516,
+      "sourceUrl": "https://t.me/IRWWA94/516",
+      "publishedAt": "2026-09-27T21:18:43+00:00",
+      "image": "assets/images/telegram/516.jpg",
+      "downloadedAt": "2026-11-15"
+    },
+    {
+      "postId": 514,
+      "sourceUrl": "https://t.me/IRWWA94/514",
+      "publishedAt": "2026-09-10T09:53:22+00:00",
+      "image": "assets/images/telegram/514.jpg",
+      "downloadedAt": "2026-11-15"
+    },
+    {
+      "postId": 513,
+      "sourceUrl": "https://t.me/IRWWA94/513",
+      "publishedAt": "2026-09-10T09:52:57+00:00",
+      "image": "assets/images/telegram/513.jpg",
+      "downloadedAt": "2026-11-15"
+    },
+    {
+      "postId": 508,
+      "sourceUrl": "https://t.me/IRWWA94/508",
+      "publishedAt": "2026-09-10T09:49:35+00:00",
+      "image": "assets/images/telegram/508.jpg",
+      "downloadedAt": "2026-11-15"
+    },
+    {
+      "postId": 511,
+      "sourceUrl": "https://t.me/IRWWA94/511",
+      "publishedAt": "2026-09-10T09:52:05+00:00",
+      "image": "assets/images/telegram/511.jpg",
+      "downloadedAt": "2026-11-15"
+    },
+    {
+      "postId": 512,
+      "sourceUrl": "https://t.me/IRWWA94/512",
+      "publishedAt": "2026-09-10T09:52:33+00:00",
+      "image": "assets/images/telegram/512.jpg",
+      "downloadedAt": "2026-11-15"
+    },
+    {
+      "postId": 510,
+      "sourceUrl": "https://t.me/IRWWA94/510",
+      "publishedAt": "2026-09-10T09:51:37+00:00",
+      "image": "assets/images/telegram/510.jpg",
+      "downloadedAt": "2026-11-15"
+    },
+    {
+      "postId": 505,
+      "sourceUrl": "https://t.me/IRWWA94/505",
+      "publishedAt": "2026-08-12T11:45:04+00:00",
+      "image": "assets/images/telegram/505.jpg",
+      "downloadedAt": "2026-11-15"
+    },
+    {
+      "postId": 467,
+      "sourceUrl": "https://t.me/IRWWA94/467",
+      "publishedAt": "2026-02-09T12:59:37+00:00",
+      "image": "assets/images/telegram/467.jpg",
+      "downloadedAt": "2026-11-15"
+    },
+    {
+      "postId": 458,
+      "sourceUrl": "https://t.me/IRWWA94/458",
+      "publishedAt": "2025-12-11T09:57:50+00:00",
+      "image": "assets/images/telegram/458.jpg",
+      "downloadedAt": "2026-11-15"
+    }
+  ],
+  "preservedUserContent": {
+    "heroIds": [
+      "hero-1",
+      "hero-2"
+    ],
+    "images": [
+      "assets/images/news/1.jpg",
+      "assets/images/news/2.jpg"
+    ]
+  },
+  "posts": [
+    {
+      "id": 521,
+      "sourceUrl": "https://t.me/IRWWA94/521",
+      "publishedAt": "2026-11-01T20:31:37+00:00"
+    },
+    {
+      "id": 498,
+      "sourceUrl": "https://t.me/IRWWA94/498",
+      "publishedAt": "2026-07-12T19:55:04+00:00"
+    },
+    {
+      "id": 523,
+      "sourceUrl": "https://t.me/IRWWA94/523",
+      "publishedAt": "2026-11-04T17:09:39+00:00"
+    },
+    {
+      "id": 520,
+      "sourceUrl": "https://t.me/IRWWA94/520",
+      "publishedAt": "2026-10-07T17:46:50+00:00"
+    },
+    {
+      "id": 519,
+      "sourceUrl": "https://t.me/IRWWA94/519",
+      "publishedAt": "2026-10-02T20:56:38+00:00"
+    },
+    {
+      "id": 518,
+      "sourceUrl": "https://t.me/IRWWA94/518",
+      "publishedAt": "2026-10-01T11:50:00+00:00"
+    },
+    {
+      "id": 516,
+      "sourceUrl": "https://t.me/IRWWA94/516",
+      "publishedAt": "2026-09-27T21:18:43+00:00"
+    },
+    {
+      "id": 514,
+      "sourceUrl": "https://t.me/IRWWA94/514",
+      "publishedAt": "2026-09-10T09:53:22+00:00"
+    },
+    {
+      "id": 513,
+      "sourceUrl": "https://t.me/IRWWA94/513",
+      "publishedAt": "2026-09-10T09:52:57+00:00"
+    },
+    {
+      "id": 508,
+      "sourceUrl": "https://t.me/IRWWA94/508",
+      "publishedAt": "2026-09-10T09:49:35+00:00"
+    },
+    {
+      "id": 512,
+      "sourceUrl": "https://t.me/IRWWA94/512",
+      "publishedAt": "2026-09-10T09:52:33+00:00"
+    },
+    {
+      "id": 511,
+      "sourceUrl": "https://t.me/IRWWA94/511",
+      "publishedAt": "2026-09-10T09:52:05+00:00"
+    },
+    {
+      "id": 510,
+      "sourceUrl": "https://t.me/IRWWA94/510",
+      "publishedAt": "2026-09-10T09:51:37+00:00"
+    },
+    {
+      "id": 505,
+      "sourceUrl": "https://t.me/IRWWA94/505",
+      "publishedAt": "2026-08-12T11:45:04+00:00"
+    },
+    {
+      "id": 467,
+      "sourceUrl": "https://t.me/IRWWA94/467",
+      "publishedAt": "2026-02-09T12:59:37+00:00"
+    },
+    {
+      "id": 458,
+      "sourceUrl": "https://t.me/IRWWA94/458",
+      "publishedAt": "2025-12-11T09:57:50+00:00"
+    },
+    {
+      "id": 504,
+      "sourceUrl": "https://t.me/IRWWA94/504",
+      "publishedAt": "2026-07-26T12:26:01+00:00"
+    },
+    {
+      "id": 522,
+      "sourceUrl": "https://t.me/IRWWA94/522",
+      "publishedAt": "2026-11-01T20:31:54+00:00"
+    },
+    {
+      "id": 464,
+      "sourceUrl": "https://t.me/IRWWA94/464",
+      "publishedAt": "2025-12-28T09:59:41+00:00"
+    }
+  ]
+}

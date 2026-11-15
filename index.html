@@ -1,0 +1,84 @@
+<!doctype html>
+<html lang="fa" dir="rtl">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width,initial-scale=1">
+  <meta name="theme-color" content="#153C5A">
+  <meta name="description" content="پیش‌نمایش صفحه اصلی انجمن آب و فاضلاب ایران؛ دانش و تجربه برای آینده‌ای پایدار.">
+  <title>انجمن آب و فاضلاب ایران | صفحه اصلی</title>
+  <link rel="icon" type="image/png" href="assets/images/association-logo.png">
+  <link rel="preload" href="assets/fonts/Vazirmatn.woff2" as="font" type="font/woff2" crossorigin>
+  <link rel="stylesheet" href="styles.css">
+  <script src="app.js" defer></script>
+</head>
+<body>
+  <a class="skip-link" href="#main">رفتن به محتوای اصلی</a>
+  <header class="site-header">
+    <div class="container brand-row">
+      <a class="brand" href="#home" aria-label="انجمن آب و فاضلاب ایران، خانه">
+        <img src="assets/images/association-logo.png" width="80" height="80" alt="نشان انجمن آب و فاضلاب ایران">
+        <span><strong id="site-title">انجمن آب و فاضلاب ایران</strong><span lang="en" dir="ltr" class="brand-en">Iranian Water and Wastewater Association</span></span>
+      </a>
+      <div class="header-tools">
+        <span class="demo-badge">پیش‌نمایش طراحی</span>
+        <button class="search-trigger" id="open-search" aria-label="جست‌وجو در سایت"><span>جست‌وجو در سایت…</span><span data-icon="search"></span></button>
+        <button class="button login-trigger" id="open-account"><span data-icon="user"></span><span>ورود / حساب کاربری</span></button>
+        <button class="icon-button mobile-menu-trigger" id="open-menu" aria-label="باز کردن فهرست" aria-haspopup="dialog"><span data-icon="menu"></span></button>
+      </div>
+    </div>
+    <nav class="desktop-navigation" aria-label="ناوبری اصلی"><div class="container nav-items" id="desktop-nav"></div></nav>
+  </header>
+
+  <main id="main">
+    <div id="loading" class="container loading-state" role="status">در حال آماده‌کردن صفحه…</div>
+    <div id="load-error" class="container error-state" hidden role="alert"></div>
+    <div id="page-content" hidden>
+      <section id="home" class="hero" aria-label="بنر اصلی" aria-roledescription="اسلایدر">
+        <div class="hero-glow" aria-hidden="true"></div>
+        <div class="container hero-layout">
+          <div class="hero-copy">
+            <p class="eyebrow" id="hero-eyebrow"></p>
+            <h1 id="hero-title"></h1>
+            <p class="hero-description" id="hero-description"></p>
+            <div class="hero-controls">
+              <button class="round-button glass" id="hero-previous" aria-label="اسلاید قبلی"><span data-icon="right"></span></button>
+              <div class="hero-dots" id="hero-dots" aria-label="انتخاب اسلاید"></div>
+              <button class="round-button glass" id="hero-next" aria-label="اسلاید بعدی"><span data-icon="left"></span></button>
+            </div>
+            <p class="visually-hidden" id="hero-status" aria-live="polite"></p>
+          </div>
+          <figure class="hero-visual"><img id="hero-image" width="560" height="350" alt=""><figcaption id="hero-caption"></figcaption><span class="image-corner corner-one" aria-hidden="true"></span><span class="image-corner corner-two" aria-hidden="true"></span></figure>
+        </div>
+      </section>
+
+      <div class="container homepage-layout">
+        <div class="main-column">
+          <div class="editorial-pair">
+            <section id="events" class="editorial-section" aria-labelledby="events-heading">
+              <div class="section-heading"><h2 id="events-heading">رویدادهای پیش رو</h2><button class="text-action" data-archive="events">همه رویدادها <span data-icon="left"></span></button></div>
+              <div id="events-carousel"></div>
+            </section>
+            <section id="news" class="editorial-section" aria-labelledby="news-heading">
+              <div class="section-heading"><h2 id="news-heading">اخبار</h2><button class="text-action" data-archive="news">همه اخبار <span data-icon="left"></span></button></div>
+              <div id="news-carousel"></div>
+            </section>
+          </div>
+          <section id="about" class="about-panel" aria-labelledby="about-heading"><span class="section-kicker">دانش، تجربه و همکاری</span><h2 id="about-heading">معرفی انجمن</h2><p id="about-description"></p><button class="button" id="join-association">عضویت در انجمن <span data-icon="left"></span></button><div class="about-watermark" aria-hidden="true" data-icon="drop"></div></section>
+          <section id="community" class="community-panel" aria-labelledby="community-heading"><div class="section-heading"><h2 id="community-heading">با انجمن در ارتباط باشید</h2></div><p class="section-description" id="community-description"></p><div class="platform-grid" id="community-platforms"></div><div class="community-divider"></div><h3 class="small-heading">گروه‌های تخصصی تلگرام</h3><div class="telegram-grid" id="telegram-groups"></div></section>
+        </div>
+        <aside id="shortcuts" class="shortcuts-column" aria-labelledby="shortcuts-heading"><h2 id="shortcuts-heading">دسترسی‌های انجمن</h2><div class="shortcuts-grid" id="shortcut-list"></div></aside>
+      </div>
+
+      <section id="statistics" class="container statistics-section" aria-labelledby="statistics-heading"><div class="statistics-inner"><h2 id="statistics-heading">انجمن در یک نگاه</h2><p id="statistics-description">جامعه تخصصی، دانش و فعالیت‌های انجمن در یک قاب</p><div class="statistics-grid" id="statistics-grid"></div></div></section>
+      <div id="members" class="container member-sections"></div>
+    </div>
+  </main>
+
+  <footer id="contact" class="site-footer" hidden><div class="container"><div class="footer-columns"><section class="footer-sites"><h2>وبگاه‌های مرتبط</h2><ul id="footer-sites"></ul></section><section class="footer-contact"><h2>ارتباط با ما</h2><dl id="footer-contact"></dl><div id="footer-socials" class="footer-socials" aria-label="شبکه‌های اجتماعی انجمن"></div></section><section class="footer-trust"><h2>نماد اعتماد الکترونیکی</h2><div id="trust-mark"></div></section></div><div class="footer-bottom"><p>تمامی حقوق این وب‌سایت متعلق به انجمن آب و فاضلاب ایران است.</p><p id="demo-disclaimer"></p></div></div></footer>
+
+  <dialog id="content-dialog" class="content-dialog" aria-labelledby="dialog-heading"><div class="dialog-top"><span class="dialog-eyebrow" id="dialog-eyebrow"></span><button class="icon-button dialog-close" aria-label="بستن پنجره" data-close><span data-icon="close"></span></button></div><div id="dialog-content"></div></dialog>
+  <dialog id="menu-dialog" class="menu-dialog" aria-labelledby="menu-heading"><div class="dialog-top"><h2 id="menu-heading">فهرست سایت</h2><button class="icon-button dialog-close" aria-label="بستن فهرست" data-close><span data-icon="close"></span></button></div><nav id="mobile-nav" aria-label="ناوبری موبایل"></nav><button class="button menu-account">ورود / حساب کاربری</button></dialog>
+  <div class="toast" id="toast" role="status" aria-live="polite" hidden></div>
+  <noscript><div class="container error-state">برای نمایش محتوای نمونه، JavaScript مرورگر را فعال کنید.</div></noscript>
+</body>
+</html>
