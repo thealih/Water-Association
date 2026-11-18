@@ -2563,3 +2563,256 @@ a {
 .hero-visual > img.is-poster,.story-image > img.is-poster{object-fit:contain;background:#eaf3fb}
 .dialog-content-image.is-poster{object-fit:contain;max-height:60dvh;background:#eaf3fb}
 .empty-editorial{padding:24px;background:white;border:1px solid var(--line);border-radius:16px;color:var(--muted);line-height:2}
+
+/* Pastel cards and native brand marks, matching the supplied visual references. */
+.login-trigger,
+.menu-account {
+  background: #0b8457;
+  border-color: #0b8457;
+  color: white;
+}
+
+.login-trigger:hover,
+.menu-account:hover {
+  background: #096c48;
+  border-color: #096c48;
+}
+
+.shortcut,
+.platform-tile,
+.telegram-tile {
+  --card-bg: #e6eefb;
+  --card-accent: #356b9b;
+  --card-icon: #cdddf0;
+  position: relative;
+  isolation: isolate;
+  overflow: hidden;
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  justify-content: flex-start;
+  gap: 12px;
+  min-width: 0;
+  min-height: 76px;
+  padding: 12px 14px;
+  border: 1px solid color-mix(in srgb, var(--card-accent) 19%, white);
+  border-radius: 20px;
+  background: var(--card-bg);
+  color: var(--ink);
+  text-align: right;
+  box-shadow: inset 0 0 0 2px #ffffff45, 0 5px 15px #153c5a06;
+  transition: transform .18s, box-shadow .18s, border-color .18s;
+}
+
+.shortcut::before,
+.platform-tile::before,
+.telegram-tile::before {
+  content: '';
+  position: absolute;
+  z-index: -1;
+  inset: 0;
+  width: auto;
+  height: auto;
+  border-radius: inherit;
+  background: #ffffff50;
+  clip-path: polygon(0 0, 68% 0, 61% 8%, 54% 21%, 47% 39%, 40% 59%, 32% 77%, 23% 91%, 12% 100%, 0 100%);
+  pointer-events: none;
+}
+
+.shortcut:hover,
+.platform-tile:hover,
+.telegram-tile:hover {
+  background: var(--card-bg);
+  border-color: color-mix(in srgb, var(--card-accent) 45%, white);
+  box-shadow: inset 0 0 0 2px #ffffff60, 0 7px 18px #153c5a12;
+  transform: translateY(-2px);
+}
+
+.shortcut:nth-child(8n + 1),
+.shortcut:nth-child(8n + 5) {
+  --card-bg: #e9ecdf;
+  --card-accent: #637447;
+  --card-icon: #d7ddc4;
+}
+
+.shortcut:nth-child(8n + 3) {
+  --card-bg: #fff0df;
+  --card-accent: #b67e27;
+  --card-icon: #fbe0af;
+}
+
+.shortcut:nth-child(8n + 4) {
+  --card-bg: #e1f0f2;
+  --card-accent: #287c86;
+  --card-icon: #c5e2e7;
+}
+
+.shortcut:nth-child(8n + 6) {
+  --card-bg: #f2e7de;
+  --card-accent: #927454;
+  --card-icon: #e6d6c5;
+}
+
+.shortcut:nth-child(8n + 7) {
+  --card-bg: #eee4f6;
+  --card-accent: #77558d;
+  --card-icon: #ddcceb;
+}
+
+.shortcut:nth-child(8n + 8) {
+  --card-bg: #fce3e5;
+  --card-accent: #b65460;
+  --card-icon: #f5cdd1;
+}
+
+.shortcut-symbol {
+  width: 48px;
+  height: 48px;
+  border-radius: 17px;
+  color: var(--card-accent);
+  background: var(--card-icon);
+}
+
+.shortcut-symbol .icon {
+  width: 29px;
+  height: 29px;
+  stroke-width: 1.8;
+}
+
+.shortcut-title {
+  flex: 1;
+  font-size: 12px;
+  line-height: 1.9;
+}
+
+.shortcut > .icon,
+.platform-tile > .icon,
+.telegram-tile > .icon {
+  position: static;
+  flex-shrink: 0;
+  width: 17px;
+  height: 17px;
+  margin-inline-start: auto;
+  color: var(--card-accent);
+}
+
+.platform-telegram,
+.telegram-tile {
+  --card-bg: #e0f2ff;
+  --card-accent: #1688bf;
+  --card-icon: #c5eafb;
+}
+
+.platform-instagram {
+  --card-bg: #f5e6fa;
+  --card-accent: #8a49b7;
+  --card-icon: #ecd3f2;
+}
+
+.platform-bale {
+  --card-bg: #e7f5ee;
+  --card-accent: #12845c;
+  --card-icon: #c9e9d9;
+}
+
+.platform-aparat {
+  --card-bg: #fde9ed;
+  --card-accent: #d03c60;
+  --card-icon: #facbd5;
+}
+
+.platform-icon {
+  display: grid;
+  place-items: center;
+  flex-shrink: 0;
+  width: 48px;
+  height: 48px;
+  border-radius: 16px;
+  background: var(--card-icon);
+}
+
+.platform-icon img,
+.telegram-tile .platform-icon img {
+  width: 36px;
+  height: 36px;
+  margin: 0;
+  filter: none;
+}
+
+.platform-instagram .platform-icon img {
+  padding: 5px;
+  border-radius: 11px;
+  background: radial-gradient(circle at 28% 100%, #ffdb78 0, #ff9a38 20%, #ee286a 48%, #ab30b6 73%, #6649ce 100%);
+}
+
+.platform-aparat .platform-icon img {
+  padding: 3px;
+  border-radius: 11px;
+  background: #ed2351;
+}
+
+.platform-title {
+  white-space: nowrap;
+}
+
+.telegram-copy {
+  min-width: 0;
+}
+
+.telegram-tile strong {
+  margin-bottom: 3px;
+}
+
+.telegram-tile small {
+  color: #236b92;
+}
+
+@media (min-width: 768px) and (max-width: 1199px) {
+  .platform-tile {
+    gap: 8px;
+    padding-inline: 10px;
+  }
+
+  .platform-tile .platform-icon {
+    width: 40px;
+    height: 40px;
+  }
+}
+
+@media (max-width: 767px) {
+  .shortcuts-grid {
+    grid-template-columns: 1fr;
+    gap: 12px;
+  }
+
+  .shortcut {
+    min-height: 76px;
+  }
+
+  .shortcut-title {
+    font-size: 13px;
+  }
+
+  .platform-tile {
+    min-height: 72px;
+    gap: 8px;
+    padding: 10px;
+    border-radius: 17px;
+  }
+
+  .platform-tile .platform-icon {
+    width: 38px;
+    height: 38px;
+    border-radius: 13px;
+  }
+
+  .platform-tile .platform-icon img {
+    width: 30px;
+    height: 30px;
+  }
+
+  .platform-tile > .icon {
+    width: 13px;
+    height: 13px;
+  }
+}

@@ -156,12 +156,13 @@ function renderEditorial(type) {
 function renderCommunity() {
   $('#about-description').textContent=data.about.description;$('#community-description').textContent=data.community.description;
   $('#community-platforms').replaceChildren(...data.community.platforms.map(item=>{
-    const tile=action('',item.url,'platform-tile',()=>openInfo(item.title,'نشانی رسمی '+item.title+' انجمن پس از تأیید اضافه خواهد شد.'));
-    tile.append(element('span',{class:'platform-icon'},[image('assets/icons/'+item.key+'.svg','',{width:20,height:20})]),element('span',{text:item.title}),icon('left'));return tile;
+    const tile=action('',item.url,'platform-tile platform-'+item.key,()=>openInfo(item.title,'نشانی رسمی '+item.title+' انجمن پس از تأیید اضافه خواهد شد.'));
+    const asset=['telegram','bale'].includes(item.key)?item.key+'-brand':item.key;
+    tile.append(element('span',{class:'platform-icon'},[image('assets/icons/'+asset+'.svg','',{width:36,height:36})]),element('span',{class:'platform-title',text:item.title}),icon('left'));return tile;
   }));
   $('#telegram-groups').replaceChildren(...data.community.groups.map(item=>{
     const tile=action('',item.url,'telegram-tile',()=>openInfo(item.title,item.description||'لینک عضویت این گروه پس از تأیید انجمن اضافه می‌شود.'));
-    tile.append(image('assets/icons/telegram.svg','',{width:22,height:22}),element('span',{},[element('strong',{text:item.title}),element('small',{text:'عضویت و گفت‌وگو ←'})]));return tile;
+    tile.append(element('span',{class:'platform-icon'},[image('assets/icons/telegram-brand.svg','',{width:36,height:36})]),element('span',{class:'telegram-copy'},[element('strong',{text:item.title}),element('small',{text:'عضویت و گفت‌وگو'})]),icon('left'));return tile;
   }));
   $('#shortcut-list').replaceChildren(...data.shortcuts.map(item=>{
     const tile=action('',item.url,'shortcut',()=>openInfo(item.title,item.description||'اطلاعات این بخش در نسخهٔ کامل وب‌سایت در دسترس خواهد بود.'));
