@@ -1,0 +1,465 @@
+{
+  "sourceFile": "1.pdf",
+  "sha256": "6b175bf6c1fd3e3bdd63bbba4af135c7f6441d11d8759f616a56036aab18653b",
+  "publication": "خبرنامه انجمن آب و فاضلاب ایران، شماره ۱۲۴ تا ۱۲۶، تیر تا شهریور ۱۴۰۵",
+  "importedAt": "2026-11-18",
+  "members": [
+    {
+      "id": "absaran",
+      "name": "مهندسین مشاور آبساران",
+      "pdfPage": 1,
+      "tableRow": 1,
+      "membershipLevel": "الماسی",
+      "logo": "assets/images/corporate/absaran.png",
+      "logoCrop": [
+        27,
+        114,
+        535,
+        223
+      ]
+    },
+    {
+      "id": "abfa-isfahan",
+      "name": "شرکت آب و فاضلاب استان اصفهان",
+      "pdfPage": 1,
+      "tableRow": 2,
+      "membershipLevel": "الماسی",
+      "logo": "assets/images/corporate/abfa-isfahan.png",
+      "logoCrop": [
+        27,
+        231,
+        535,
+        359
+      ]
+    },
+    {
+      "id": "abfa-west-azerbaijan",
+      "name": "شرکت آب و فاضلاب استان آذربایجان غربی",
+      "pdfPage": 1,
+      "tableRow": 3,
+      "membershipLevel": "الماسی",
+      "logo": "assets/images/corporate/abfa-west-azerbaijan.png",
+      "logoCrop": [
+        27,
+        367,
+        535,
+        519
+      ]
+    },
+    {
+      "id": "tarh-tahghighat-isfahan",
+      "name": "مهندسین مشاور طرح و تحقیقات اصفهان",
+      "pdfPage": 1,
+      "tableRow": 4,
+      "membershipLevel": "الماسی",
+      "logo": "assets/images/corporate/tarh-tahghighat-isfahan.png",
+      "logoCrop": [
+        27,
+        527,
+        535,
+        692
+      ]
+    },
+    {
+      "id": "abfa-kashan",
+      "name": "شرکت آب و فاضلاب کاشان",
+      "pdfPage": 1,
+      "tableRow": 5,
+      "membershipLevel": "الماسی",
+      "logo": "assets/images/corporate/abfa-kashan.png",
+      "logoCrop": [
+        27,
+        700,
+        535,
+        841
+      ]
+    },
+    {
+      "id": "fapco",
+      "name": "فرآیند ارقام پرداز",
+      "pdfPage": 1,
+      "tableRow": 6,
+      "membershipLevel": "الماسی",
+      "logo": "assets/images/corporate/fapco.png",
+      "logoCrop": [
+        27,
+        849,
+        535,
+        978
+      ]
+    },
+    {
+      "id": "abfa-mashhad",
+      "name": "شرکت آب و فاضلاب مشهد",
+      "pdfPage": 1,
+      "tableRow": 7,
+      "membershipLevel": "طلایی",
+      "logo": "assets/images/corporate/abfa-mashhad.png",
+      "logoCrop": [
+        27,
+        986,
+        535,
+        1140
+      ]
+    },
+    {
+      "id": "fanavar-imen-lotus",
+      "name": "فناور ایمن لوتوس",
+      "pdfPage": 1,
+      "tableRow": 8,
+      "membershipLevel": "طلایی",
+      "logo": "assets/images/corporate/fanavar-imen-lotus.png",
+      "logoCrop": [
+        27,
+        1148,
+        535,
+        1283
+      ]
+    },
+    {
+      "id": "tavana",
+      "name": "شرکت مهندسی خطوط لوله توانا",
+      "pdfPage": 1,
+      "tableRow": 9,
+      "membershipLevel": "طلایی",
+      "logo": "assets/images/corporate/tavana.png",
+      "logoCrop": [
+        27,
+        1291,
+        535,
+        1416
+      ]
+    },
+    {
+      "id": "omran-mayadin-ab",
+      "name": "شرکت عمران میادین آب",
+      "pdfPage": 2,
+      "tableRow": 1,
+      "membershipLevel": "طلایی",
+      "logo": "assets/images/corporate/omran-mayadin-ab.png",
+      "logoCrop": [
+        27,
+        16,
+        539,
+        128
+      ]
+    },
+    {
+      "id": "pars-rahab-shibkuh",
+      "name": "شرکت پارس رهاب شیبکوه",
+      "pdfPage": 2,
+      "tableRow": 2,
+      "membershipLevel": "طلایی",
+      "logo": "assets/images/corporate/pars-rahab-shibkuh.png",
+      "logoCrop": [
+        27,
+        136,
+        539,
+        248
+      ]
+    },
+    {
+      "id": "toossab",
+      "name": "مهندسین مشاور طوس آب",
+      "pdfPage": 2,
+      "tableRow": 3,
+      "membershipLevel": "نقره‌ای",
+      "logo": "assets/images/corporate/toossab.png",
+      "logoCrop": [
+        27,
+        256,
+        539,
+        371
+      ]
+    },
+    {
+      "id": "pars-arian-ab",
+      "name": "مهندسین مشاور پارس آرین آب",
+      "pdfPage": 2,
+      "tableRow": 4,
+      "membershipLevel": "نقره‌ای",
+      "logo": "assets/images/corporate/pars-arian-ab.png",
+      "logoCrop": [
+        27,
+        379,
+        539,
+        491
+      ]
+    },
+    {
+      "id": "pouyak",
+      "name": "پویاک",
+      "pdfPage": 2,
+      "tableRow": 5,
+      "membershipLevel": "نقره‌ای",
+      "logo": "assets/images/corporate/pouyak.png",
+      "logoCrop": [
+        27,
+        499,
+        539,
+        562
+      ]
+    },
+    {
+      "id": "vacuum-pars",
+      "name": "صنایع وکیوم پارس",
+      "pdfPage": 2,
+      "tableRow": 6,
+      "membershipLevel": "نقره‌ای",
+      "logo": "assets/images/corporate/vacuum-pars.png",
+      "logoCrop": [
+        27,
+        570,
+        539,
+        656
+      ]
+    },
+    {
+      "id": "abran",
+      "name": "مهندسین مشاور آبران",
+      "pdfPage": 2,
+      "tableRow": 7,
+      "membershipLevel": "نقره‌ای",
+      "logo": "assets/images/corporate/abran.png",
+      "logoCrop": [
+        27,
+        664,
+        539,
+        777
+      ]
+    },
+    {
+      "id": "raadab",
+      "name": "خدمات مهندسی برق و الکترونیک رعدآب",
+      "pdfPage": 2,
+      "tableRow": 8,
+      "membershipLevel": "نقره‌ای",
+      "logo": "assets/images/corporate/raadab.png",
+      "logoCrop": [
+        27,
+        785,
+        539,
+        914
+      ]
+    },
+    {
+      "id": "rashab-tarh",
+      "name": "رشاب طرح",
+      "pdfPage": 2,
+      "tableRow": 9,
+      "membershipLevel": "نقره‌ای",
+      "logo": "assets/images/corporate/rashab-tarh.png",
+      "logoCrop": [
+        27,
+        922,
+        539,
+        1050
+      ]
+    },
+    {
+      "id": "persia-optimized-designing",
+      "name": "بهینه طراحی پرشیا",
+      "pdfPage": 2,
+      "tableRow": 10,
+      "membershipLevel": "نقره‌ای",
+      "logo": "assets/images/corporate/persia-optimized-designing.png",
+      "logoCrop": [
+        27,
+        1058,
+        539,
+        1170
+      ]
+    },
+    {
+      "id": "zayandab",
+      "name": "زایندآب",
+      "pdfPage": 2,
+      "tableRow": 11,
+      "membershipLevel": "نقره‌ای",
+      "logo": "assets/images/corporate/zayandab.png",
+      "logoCrop": [
+        27,
+        1178,
+        539,
+        1324
+      ]
+    },
+    {
+      "id": "yekam",
+      "name": "مهندسین مشاور یکم",
+      "pdfPage": 2,
+      "tableRow": 12,
+      "membershipLevel": "برنزی",
+      "logo": "assets/images/corporate/yekam.png",
+      "logoCrop": [
+        27,
+        1332,
+        539,
+        1455
+      ]
+    },
+    {
+      "id": "aban-baspar-parsian",
+      "name": "آبان بسپار پارسیان",
+      "pdfPage": 2,
+      "tableRow": 13,
+      "membershipLevel": "برنزی",
+      "logo": "assets/images/corporate/aban-baspar-parsian.png",
+      "logoCrop": [
+        27,
+        1463,
+        539,
+        1541
+      ]
+    },
+    {
+      "id": "madyar",
+      "name": "فراگیر انرژی و پالایش مادیار",
+      "pdfPage": 3,
+      "tableRow": 1,
+      "membershipLevel": "برنزی",
+      "logo": "assets/images/corporate/madyar.png",
+      "logoCrop": [
+        27,
+        20,
+        539,
+        118
+      ]
+    },
+    {
+      "id": "hapico",
+      "name": "خط لوله هامون (هیپکو)",
+      "pdfPage": 3,
+      "tableRow": 2,
+      "membershipLevel": "برنزی",
+      "logo": "assets/images/corporate/hapico.png",
+      "logoCrop": [
+        150,
+        125,
+        430,
+        235
+      ]
+    },
+    {
+      "id": "sanjesh-afzar-asia",
+      "name": "سنجش افزار آسیا",
+      "pdfPage": 3,
+      "tableRow": 3,
+      "membershipLevel": "برنزی",
+      "logo": "assets/images/corporate/sanjesh-afzar-asia.png",
+      "logoCrop": [
+        27,
+        242,
+        539,
+        393
+      ]
+    },
+    {
+      "id": "abfa-fars",
+      "name": "آب و فاضلاب فارس",
+      "pdfPage": 3,
+      "tableRow": 4,
+      "membershipLevel": "برنزی",
+      "logo": "assets/images/corporate/abfa-fars.png",
+      "logoCrop": [
+        27,
+        401,
+        539,
+        575
+      ]
+    },
+    {
+      "id": "abfa-east-azerbaijan",
+      "name": "شرکت آب و فاضلاب استان آذربایجان شرقی",
+      "pdfPage": 3,
+      "tableRow": 5,
+      "membershipLevel": "برنزی",
+      "logo": "assets/images/corporate/abfa-east-azerbaijan.png",
+      "logoCrop": [
+        27,
+        583,
+        539,
+        735
+      ]
+    },
+    {
+      "id": "ayandeh-mitra",
+      "name": "مهندسین مشاور آینده میترا",
+      "pdfPage": 3,
+      "tableRow": 6,
+      "membershipLevel": "برنزی",
+      "logo": "assets/images/corporate/ayandeh-mitra.png",
+      "logoCrop": [
+        27,
+        743,
+        539,
+        847
+      ]
+    },
+    {
+      "id": "mapna-boiler",
+      "name": "شرکت مهندسی و ساخت بویلر و تجهیزات مپنا",
+      "pdfPage": 3,
+      "tableRow": 7,
+      "membershipLevel": "برنزی",
+      "logo": "assets/images/corporate/mapna-boiler.png",
+      "logoCrop": [
+        27,
+        855,
+        539,
+        1012
+      ]
+    },
+    {
+      "id": "absoo",
+      "name": "شرکت مهندسین مشاور آبسو",
+      "pdfPage": 3,
+      "tableRow": 8,
+      "membershipLevel": "برنزی",
+      "logo": "assets/images/corporate/absoo.png",
+      "logoCrop": [
+        27,
+        1020,
+        539,
+        1155
+      ]
+    },
+    {
+      "id": "fanavaran-kherad-rad",
+      "name": "شرکت مهندسی فن‌آوران خرد راد",
+      "pdfPage": 3,
+      "tableRow": 9,
+      "membershipLevel": "برنزی",
+      "logo": "assets/images/corporate/fanavaran-kherad-rad.png",
+      "logoCrop": [
+        27,
+        1163,
+        539,
+        1301
+      ]
+    },
+    {
+      "id": "farayand-zist",
+      "name": "شرکت فرآیند زیست",
+      "pdfPage": 3,
+      "tableRow": 10,
+      "membershipLevel": "برنزی",
+      "logo": "assets/images/corporate/farayand-zist.png",
+      "logoCrop": [
+        27,
+        1309,
+        539,
+        1442
+      ]
+    },
+    {
+      "id": "daryarood-jonoub",
+      "name": "شرکت دریارود جنوب",
+      "pdfPage": 3,
+      "tableRow": 11,
+      "membershipLevel": "برنزی",
+      "logo": null,
+      "logoCrop": null
+    }
+  ]
+}

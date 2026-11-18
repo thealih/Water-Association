@@ -211,8 +211,8 @@ function renderStatistics() {
 }
 function openMember(item,group) {
   const content=dialogContent(item.name,group.title);
-  const picture=image(item.image,item.imageAlt||item.name,{lazy:false,width:112,height:112,className:'member-image'+(group.key==='veterans'&&item.isDemo===false?' veteran-portrait':'')});picture.style.marginInline='auto';content.prepend(picture);
-  content.append(element('p',{class:'dialog-meta',text:item.role||''}),element('p',{class:'dialog-body',text:item.description||'معرفی، فعالیت‌ها و راه‌های ارتباط با این عضو در نسخهٔ کامل وب‌سایت درج خواهد شد.'}));
+  const picture=image(item.image,item.imageAlt||item.name,{lazy:false,width:112,height:112,className:'member-image'+(group.key==='veterans'&&item.isDemo===false?' veteran-portrait':'')+(group.key==='corporate'?' corporate-logo':'')});picture.style.marginInline='auto';content.prepend(picture);
+  content.append(element('p',{class:'dialog-meta',text:[item.role,group.key==='corporate'?item.badge:''].filter(Boolean).join(' · ')}),element('p',{class:'dialog-body',text:item.description||'معرفی، فعالیت‌ها و راه‌های ارتباط با این عضو در نسخهٔ کامل وب‌سایت درج خواهد شد.'}));
   if(item.isDemo??group.isDemo??true)content.append(element('p',{class:'dialog-note',text:'نام و تصویر این کارت برای نمونهٔ طراحی است و معرفی عضو واقعی انجمن نیست.'}));
   else if(item.sourceNote)content.append(element('p',{class:'dialog-note',text:item.sourceNote}));
   if(safeURL(item.url))content.append(action('وبگاه عضو',item.url,'button'));
@@ -223,8 +223,8 @@ function openArchive(key) {
   const content=dialogContent(isMembers?group.archiveLabel:collection.archiveLabel||collection.title,isMembers?(group.isDemo===false?group.title:'فهرست نمونه اعضا'):'اخبار و رویدادهای انجمن');
   const list=element('div',{class:'archive-list'});
   for(const item of [...collection.items,...(collection.archiveItems||[])]) {
-    const detail=(item.role||item.date||'')+(item.eventStatus==='past'?' · آرشیو رویدادها':'');
-    const row=element('button',{type:'button',class:'archive-item',onclick:()=>isMembers?openMember(item,group):openStory(item,key)},[image(item.image,item.imageAlt||item.name||item.title,{width:76,height:64}),element('span',{},[element('strong',{text:item.name||item.title}),element('small',{text:detail})]),icon('left')]);list.append(row);
+    const detail=(group?.key==='corporate'?item.badge:item.role||item.date||'')+(item.eventStatus==='past'?' · آرشیو رویدادها':'');
+    const row=element('button',{type:'button',class:'archive-item'+(group?.key==='corporate'?' corporate-archive-item':''),onclick:()=>isMembers?openMember(item,group):openStory(item,key)},[image(item.image,item.imageAlt||item.name||item.title,{width:76,height:64}),element('span',{},[element('strong',{text:item.name||item.title}),element('small',{text:detail})]),icon('left')]);list.append(row);
   }
   content.append(list);
 }
@@ -239,7 +239,7 @@ function renderMembers() {
     const track=element('div',{class:'people-track'});
     for(const item of group.items) {
       const name=element('button',{type:'button',text:item.name,onclick:()=>openMember(item,group)});
-      track.append(element('article',{class:'member-card '+group.key},[image(item.image,item.imageAlt||item.name,{width:112,height:112,className:'member-image'}),element('h3',{},[name]),element('p',{text:item.role||''}),element('span',{class:'member-badge',text:item.badge||group.badge})]));
+      track.append(element('article',{class:'member-card '+group.key+(item.membershipTier?' membership-'+item.membershipTier:'')},[image(item.image,item.imageAlt||item.name,{width:112,height:112,className:'member-image'}),element('h3',{},[name]),element('p',{text:item.role||''}),element('span',{class:'member-badge',text:item.badge||group.badge})]));
     }
     const viewport=element('div',{class:'people-viewport'},[track]);
     let index=0;

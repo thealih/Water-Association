@@ -1234,9 +1234,12 @@ a {
 }
 
 .member-card.corporate .member-image {
+  width: 160px;
+  max-width: 100%;
   border-radius: 16px;
   object-fit: contain;
-  padding: 10px
+  padding: 6px;
+  background: white;
 }
 
 .member-card h3 {
@@ -1277,8 +1280,29 @@ a {
   box-shadow: 0 0 0 3px #f1e3c9, 0 0 0 6px white
 }
 
-.member-card.veterans h3 {
+.member-card.veterans h3,
+.member-card.corporate h3 {
   white-space: normal;
+}
+
+.member-card.membership-diamond .member-badge { background: #e0f2f6; color: #236b80; }
+.member-card.membership-gold .member-badge { background: #fbefd5; color: #80601d; }
+.member-card.membership-silver .member-badge { background: #edf0f4; color: #526174; }
+.member-card.membership-bronze .member-badge { background: #f7e8dc; color: #8b5732; }
+
+.content-dialog .corporate-logo {
+  width: 300px;
+  max-width: 100%;
+  height: 180px;
+  object-fit: contain;
+  border-radius: 12px;
+  background: white;
+}
+
+.archive-item.corporate-archive-item img {
+  object-fit: contain;
+  background: white;
+  padding: 4px;
 }
 
 .content-dialog .veteran-portrait {
