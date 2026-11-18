@@ -27,12 +27,20 @@ let browser;
   browser=await chromium.launch({headless:true,executablePath:process.env.DEMO_CHROME||'C:\\Program Files\\Google\\Chrome\\Application\\chrome.exe',args:['--no-sandbox']});
   const failures=[],results=[];
   for(const width of [1440,1024,768,390,360]){
-    const context=await browser.newContext({viewport:{width,height:1000},deviceScaleFactor:1,locale:'fa-IR',isMobile:width<768,hasTouch:width<768});
+    const context=await browser.newContext({viewport:{width,height:1000},deviceScaleFactor:1,locale:'fa-IR',isMobile:width<768,hasTouch:width<768,reducedMotion:'reduce'});
     const page=await context.newPage();await page.addInitScript(()=>{const OriginalDate=Date;window.Date=class extends OriginalDate{constructor(...args){super(...(args.length?args:['2026-11-15T09:00:00+03:30']));}static now(){return new OriginalDate('2026-11-15T09:00:00+03:30').getTime();}};});page.on('pageerror',error=>failures.push(error.message));page.on('response',response=>{if(response.status()>=400)failures.push(response.status()+' '+response.url());});
     await page.goto(url);await page.waitForSelector('body[data-ready="true"]');await page.evaluate(()=>document.fonts.ready);await page.waitForTimeout(150);
     assert.equal(await page.locator('.people-section').count(),3);assert.equal(await page.locator('.stat-card').count(),10);assert.equal(await page.locator('.shortcut').count(),11);
     const layout=await page.evaluate(()=>({width:innerWidth,scroll:document.documentElement.scrollWidth,font:document.fonts.check('14px Vazirmatn'),heroImage:document.querySelector('.hero-visual').getBoundingClientRect().toJSON(),heroTitle:document.querySelector('.hero-copy').getBoundingClientRect().toJSON()}));
     assert(layout.scroll<=layout.width+1,'Horizontal overflow at '+width+': '+layout.scroll);assert(layout.font,'Local font not loaded');
+    const bannerHeights=[];
+    for(let i=0;i<content.hero.slides.length;i++){
+      await page.locator('#hero-dots button').nth(i).click();
+      bannerHeights.push(await page.locator('.hero').evaluate(n=>n.getBoundingClientRect().height));
+      assert(await page.locator('.hero-copy').evaluate(n=>n.scrollHeight<=n.clientHeight+1),'Hero content must fit the reserved maximum height');
+    }
+    assert(Math.max(...bannerHeights)-Math.min(...bannerHeights)<1,'Hero height must stay fixed across every slide at '+width);
+    await page.locator('#hero-dots button').first().click();
     if(width>=768){
       const menus=page.locator('#desktop-nav details'),first=menus.first();
       await first.locator('summary').hover();assert(await first.getAttribute('open')!==null,'Hover must open desktop submenu');
@@ -103,6 +111,28 @@ let browser;
     if(width===1440||width===390){await page.evaluate(()=>{document.activeElement?.blur();window.scrollTo({top:0,behavior:"instant"});});await page.waitForTimeout(200);if(width===1440)await page.screenshot({path:path.join(artifacts,'desktop-preview.png')});await page.screenshot({path:path.join(artifacts,width===1440?'desktop.png':'mobile.png'),fullPage:true});await page.locator('.member-sections').screenshot({path:path.join(artifacts,width===1440?'desktop-members.png':'mobile-members.png')});}
     results.push({width,overflow:false,sections:3,json:true,sliders:true,archives:true,search:true,images:true});await context.close();
   }
+  // Exercise autoplay with real motion, including all carousel families and pause states.
+  const auto=await browser.newPage({viewport:{width:1440,height:1000}});
+  await auto.clock.install({time:new Date('2026-11-15T09:00:00+03:30')});
+  await auto.goto(url);await auto.waitForSelector('body[data-ready="true"]');
+  for(const selector of ['.hero','#news-carousel','#events-carousel','[data-members="corporate"] .people-carousel','[data-members="individual"] .people-carousel','[data-members="veterans"] .people-carousel']){
+    const root=auto.locator(selector);await root.scrollIntoViewIfNeeded();await auto.mouse.move(0,0);await auto.waitForTimeout(100);
+    const read=()=>root.evaluate(n=>n.querySelector('.people-track')?.style.transform||n.querySelector('h1,h3').textContent);
+    const before=await read();await auto.clock.fastForward(5600);assert.notEqual(await read(),before,'Autoplay must advance '+selector);
+    await root.locator('.autoplay-toggle').click();await auto.evaluate(()=>document.activeElement.blur());await auto.mouse.move(0,0);
+    const paused=await read();await auto.clock.fastForward(11000);assert.equal(await read(),paused,'Pause must stop '+selector);
+  }
+  await auto.locator('.hero').scrollIntoViewIfNeeded();await auto.locator('.hero .autoplay-toggle').click();await auto.evaluate(()=>document.activeElement.blur());await auto.mouse.move(0,0);await auto.waitForTimeout(100);
+  let autoTitle=await auto.locator('#hero-title').textContent();await auto.clock.fastForward(5600);assert.notEqual(await auto.locator('#hero-title').textContent(),autoTitle,'Resume must restart autoplay');
+  await auto.locator('.hero').hover();autoTitle=await auto.locator('#hero-title').textContent();await auto.clock.fastForward(11000);assert.equal(await auto.locator('#hero-title').textContent(),autoTitle,'Hover must pause autoplay');
+  await auto.mouse.move(0,0);await auto.locator('#open-account').click();autoTitle=await auto.locator('#hero-title').textContent();await auto.clock.fastForward(5600);assert.equal(await auto.locator('#hero-title').textContent(),autoTitle,'Open dialogs must pause autoplay');await auto.locator('#content-dialog [data-close]').click();
+  for(const width of [390,1024,360,1440]){
+    await auto.setViewportSize({width,height:1000});await auto.clock.runFor(100);await auto.waitForTimeout(100);
+    const heights=[];
+    for(let i=0;i<content.hero.slides.length;i++){await auto.locator('#hero-dots button').nth(i).click();heights.push(await auto.locator('.hero').evaluate(n=>n.getBoundingClientRect().height));}
+    assert(Math.max(...heights)-Math.min(...heights)<1,'Resized hero must remain stable at '+width);
+  }
+  await auto.emulateMedia({reducedMotion:'reduce'});await auto.evaluate(()=>document.activeElement.blur());await auto.mouse.move(0,0);autoTitle=await auto.locator('#hero-title').textContent();await auto.clock.fastForward(11000);assert.equal(await auto.locator('#hero-title').textContent(),autoTitle);await auto.close();
   // Check count-up progression, completion, one-time playback and reduced motion.
   const statsPage=await browser.newPage({viewport:{width:1440,height:900}});
   await statsPage.goto(url);await statsPage.waitForSelector('body[data-ready="true"]');
@@ -119,5 +149,5 @@ let browser;
   modified.hero.slides[0].title='عنوان قابل ویرایش از JSON';
   await page.route('**/data/content.json',route=>route.fulfill({contentType:'application/json',body:JSON.stringify(modified)}));await page.goto(url);await page.waitForSelector('body[data-ready="true"]');assert.equal(await page.locator('#hero-title').textContent(),modified.hero.slides[0].title);await page.locator('[data-archive="news"]').click();assert.equal(await page.locator('#content-dialog .archive-item').count(),11);await context.close();
   const future=await browser.newPage();await future.addInitScript(()=>{const OriginalDate=Date;window.Date=class extends OriginalDate{constructor(...args){super(...(args.length?args:['2030-01-01T12:00:00Z']));}};});await future.goto(url);await future.waitForSelector('body[data-ready="true"]');assert.equal(await future.locator('#events-carousel .story-card').count(),0);assert(await future.locator('#events-carousel .empty-editorial').isVisible());await future.locator('[data-archive="events"]').click();assert.equal(await future.locator('#content-dialog .archive-item').count(),10);await future.close();
-  assert.deepEqual(failures,[]);fs.writeFileSync(path.join(artifacts,'validation.json'),JSON.stringify({passed:true,viewports:results,projectSubpath:true,jsonExtension:true,telegramContent:true,eventArchiving:true,posterContain:true,browserErrors:failures},null,2));console.log('PASS: five viewports, real Telegram posts/posters, four upcoming/six archived events, automatic expiry, project subpath, JSON extension, mobile geometry, sliders, archives, menu, search.');
+  assert.deepEqual(failures,[]);fs.writeFileSync(path.join(artifacts,'validation.json'),JSON.stringify({passed:true,viewports:results,projectSubpath:true,jsonExtension:true,telegramContent:true,eventArchiving:true,posterContain:true,stableHeroHeight:true,allCarouselsAutoplay:true,pauseAndResume:true,responsiveHeroSizing:true,browserErrors:failures},null,2));console.log('PASS: five viewports, real Telegram posts/posters, four upcoming/six archived events, automatic expiry, project subpath, JSON extension, mobile geometry, stable responsive hero, six autoplay carousels, pause/resume, archives, menu, search.');
 })().catch(error=>{console.error(error);process.exitCode=1;}).finally(async()=>{if(browser)await browser.close();server.close();});

@@ -3,6 +3,7 @@
 // All content comes from data/content.json. No framework or build step is needed.
 const $ = selector => document.querySelector(selector);
 const ICONS = {
+  pause:'<path d="M9 5v14M15 5v14"/>',play:'<path d="m9 5 11 7-11 7Z"/>',
   left:'<path d="m14 6-6 6 6 6"/>',right:'<path d="m10 6 6 6-6 6"/>',down:'<path d="m6 9 6 6 6-6"/>',
   search:'<circle cx="10.5" cy="10.5" r="6.5"/><path d="m16 16 5 5"/>',user:'<circle cx="12" cy="8" r="4"/><path d="M4 21v-2a8 8 0 0 1 16 0v2"/>',
   menu:'<path d="M4 6h16M4 12h16M4 18h16"/>',close:'<path d="m6 6 12 12M18 6 6 18"/>',
@@ -20,6 +21,69 @@ const ICONS = {
 let data;
 const state = { hero:0, news:0, events:0 };
 const formatNumber = value => typeof value === 'number' ? new Intl.NumberFormat('fa-IR').format(value) : String(value ?? '—');
+const reducedMotion = matchMedia('(prefers-reduced-motion: reduce)');
+
+function animateSlide(nodes,direction=1) {
+  if(reducedMotion.matches)return;
+  for(const node of nodes){
+    node.getAnimations().forEach(animation=>animation.cancel());
+    node.animate([{opacity:.25,transform:'translateX('+direction*18+'px)'},{opacity:1,transform:'translateX(0)'}],{duration:360,easing:'cubic-bezier(.2,.7,.3,1)'});
+  }
+}
+
+function installAutoplay(root,advance,controls=root,{canAdvance=()=>true,delay=5500}={}) {
+  let timer,visible=false,paused=false;
+  const toggle=element('button',{type:'button',class:'autoplay-toggle','aria-label':'توقف پخش خودکار','aria-pressed':'false',title:'توقف پخش خودکار'});
+  function updateToggle(){
+    const label=paused?'شروع پخش خودکار':'توقف پخش خودکار';
+    toggle.setAttribute('aria-label',label);toggle.setAttribute('aria-pressed',String(paused));toggle.title=label;
+    toggle.replaceChildren(icon(paused?'play':'pause'));
+  }
+  function schedule(){
+    clearTimeout(timer);
+    if(!paused&&!reducedMotion.matches&&!document.hidden&&visible)timer=setTimeout(()=>{
+      const hovering=matchMedia('(hover: hover)').matches&&root.matches(':hover');
+      if(!hovering&&!root.contains(document.activeElement)&&!document.querySelector('dialog[open]')&&canAdvance())advance();
+      schedule();
+    },delay);
+  }
+  toggle.addEventListener('click',()=>{paused=!paused;updateToggle();schedule();});
+  updateToggle();controls.append(toggle);
+  for(const event of ['pointerdown','click','keydown','focusout'])root.addEventListener(event,schedule);
+  root.addEventListener('pointerenter',event=>{if(event.pointerType==='mouse')clearTimeout(timer);});
+  root.addEventListener('pointerleave',schedule);
+  root.addEventListener('focusin',()=>clearTimeout(timer));
+  document.addEventListener('visibilitychange',schedule);
+  reducedMotion.addEventListener('change',()=>{toggle.hidden=reducedMotion.matches;schedule();});
+  toggle.hidden=reducedMotion.matches;
+  new IntersectionObserver(entries=>{visible=entries[0].isIntersecting;schedule();},{threshold:.1}).observe(root);
+}
+
+function installHeroSizing() {
+  const copy=$('.hero-copy');
+  let previousWidth=0,scheduled;
+  function measure(){
+    const width=copy.getBoundingClientRect().width;
+    if(!width)return;
+    const probes=data.hero.slides.map(slide=>{
+      const probe=copy.cloneNode(true);
+      probe.querySelector('.eyebrow').textContent=slide.eyebrow||data.hero.eyebrow||'';
+      probe.querySelector('h1').textContent=slide.title;
+      probe.querySelector('.hero-description').textContent=slide.description;
+      probe.removeAttribute('id');probe.querySelectorAll('[id]').forEach(node=>node.removeAttribute('id'));
+      probe.inert=true;probe.setAttribute('aria-hidden','true');
+      Object.assign(probe.style,{position:'absolute',inset:'0 auto auto 0',width:width+'px',minHeight:'0',height:'auto',visibility:'hidden',pointerEvents:'none'});
+      $('.hero').append(probe);return probe;
+    });
+    const height=Math.ceil(Math.max(...probes.map(probe=>probe.getBoundingClientRect().height)));
+    probes.forEach(probe=>probe.remove());copy.style.minHeight=height+'px';
+    previousWidth=width;
+  }
+  function queue(){cancelAnimationFrame(scheduled);scheduled=requestAnimationFrame(measure);}
+  measure();
+  new ResizeObserver(()=>{if(Math.abs(copy.getBoundingClientRect().width-previousWidth)>.5)queue();}).observe(copy);
+  document.fonts.addEventListener('loadingdone',queue);
+}
 
 function element(tag, attributes={}, children=[]) {
   const node = document.createElement(tag);
@@ -106,17 +170,18 @@ function renderNav(container,mobile=false) {
     }
   }
 }
-function renderHero() {
+function renderHero(animate=false,direction=1) {
   const slides=data.hero.slides, slide=slides[state.hero];
   $('#hero-eyebrow').textContent=slide.eyebrow||data.hero.eyebrow||'';
   $('#hero-title').textContent=slide.title;$('#hero-description').textContent=slide.description;
   const picture=$('#hero-image');picture.src=safeURL(slide.image)||'assets/images/fallback.svg';picture.alt=slide.imageAlt||'';picture.setAttribute('fetchpriority','high');picture.classList.toggle('is-poster',slide.imageFit==='contain');
   picture.onerror=()=>{picture.onerror=null;picture.src='assets/images/fallback.svg';};
   $('#hero-caption').textContent=slide.caption||'';$('#hero-caption').hidden=!slide.caption;
-  $('#hero-dots').replaceChildren(...slides.map((_,index)=>element('button',{type:'button','aria-label':'نمایش اسلاید '+formatNumber(index+1),'aria-current':index===state.hero?'true':'false',onclick:()=>{state.hero=index;renderHero();}})));
+  $('#hero-dots').replaceChildren(...slides.map((_,index)=>element('button',{type:'button','aria-label':'نمایش اسلاید '+formatNumber(index+1),'aria-current':index===state.hero?'true':'false',onclick:()=>{const direction=index>=state.hero?1:-1;state.hero=index;renderHero(true,direction);$('#hero-dots button[aria-current="true"]').focus({preventScroll:true});}})));
   $('#hero-status').textContent='اسلاید '+formatNumber(state.hero+1)+' از '+formatNumber(slides.length);
+  if(animate)animateSlide([$('#hero-image'),$('#hero-eyebrow'),$('#hero-title'),$('#hero-description')],direction);
 }
-function stepHero(delta) { state.hero=(state.hero+delta+data.hero.slides.length)%data.hero.slides.length;renderHero(); }
+function stepHero(delta) { state.hero=(state.hero+delta+data.hero.slides.length)%data.hero.slides.length;renderHero(true,delta); }
 function installSwipe(node,next,previous) {
   let start=null;
   node.addEventListener('pointerdown',event=>{if(event.isPrimary)start={x:event.clientX,y:event.clientY};});
@@ -139,7 +204,7 @@ function openStory(item,type) {
   for(const url of item.sourceUrls||[])if(url!==item.sourceUrl)content.append(action('اطلاعیهٔ تکمیلی در کانال',url,'text-action'));
   content.append(element('p',{class:'dialog-note',text:item.sourceUrl?'خلاصهٔ بازنویسی‌شده بر اساس اطلاعیهٔ کانال انجمن آب و فاضلاب ایران. تاریخ و شرایط را در متن اصلی اطلاعیه بررسی کنید.':'این مطلب بخشی از محتوای نمونه برای نمایش طراحی است.'}));
 }
-function renderEditorial(type) {
+function renderEditorial(type,animate=false,direction=1) {
   const items=data[type].items,host=$('#'+type+'-carousel');
   if(!items.length){host.replaceChildren(element('p',{class:'empty-editorial',text:type==='events'?'در اطلاعیه‌های واردشده، رویدادی با تاریخ آینده باقی نمانده است. رویدادهای قبلی در فهرست همه رویدادها قابل مشاهده‌اند.':'به‌زودی مطالب این بخش منتشر می‌شود.'}));return;}
   const item=items[state[type]],event=type==='events';
@@ -150,16 +215,18 @@ function renderEditorial(type) {
   if(event)bottom.append(element('span',{class:'event-location'},[icon('map'),document.createTextNode(item.location||'آنلاین')]));
   const body=element('div',{class:'story-body'},[meta,element('h3',{text:item.title}),element('p',{class:'story-excerpt',text:item.excerpt||''}),bottom]);
   const card=element('article',{class:'story-card'},[media,body]);
-  const change=delta=>{state[type]=(state[type]+delta+items.length)%items.length;renderEditorial(type);};
+  const change=delta=>{state[type]=(state[type]+delta+items.length)%items.length;renderEditorial(type,true,delta);};
   const previous=element('button',{type:'button',class:'round-button editorial-arrow editorial-previous','aria-label':event?'رویداد قبلی':'خبر قبلی',onclick:()=>change(-1)},[icon('right')]);
   const next=element('button',{type:'button',class:'round-button editorial-arrow editorial-next','aria-label':event?'رویداد بعدی':'خبر بعدی',onclick:()=>change(1)},[icon('left')]);
   previous.disabled=next.disabled=items.length<2;
   const frame=element('div',{class:'editorial-carousel',tabindex:'0',role:'region','aria-label':event?'اسلایدر رویدادها':'اسلایدر اخبار'},[card,previous,next]);
   frame.addEventListener('keydown',e=>{if(e.key==='ArrowLeft'||e.key==='ArrowRight'){e.preventDefault();change(e.key==='ArrowLeft'?1:-1);}});
   installSwipe(frame,()=>change(1),()=>change(-1));
-  const status=element('div',{class:'carousel-status',role:'group','aria-label':event?'انتخاب رویداد':'انتخاب خبر'},items.map((entry,index)=>element('button',{type:'button',class:'editorial-dot','aria-label':(event?'نمایش رویداد ':'نمایش خبر ')+formatNumber(index+1)+': '+entry.title,'aria-current':index===state[type]?'true':'false',onclick:()=>{state[type]=index;renderEditorial(type);host.querySelector('.editorial-dot[aria-current="true"]').focus({preventScroll:true});}})));
+  const status=element('div',{class:'carousel-status',role:'group','aria-label':event?'انتخاب رویداد':'انتخاب خبر'},items.map((entry,index)=>element('button',{type:'button',class:'editorial-dot','aria-label':(event?'نمایش رویداد ':'نمایش خبر ')+formatNumber(index+1)+': '+entry.title,'aria-current':index===state[type]?'true':'false',onclick:()=>{const direction=index>=state[type]?1:-1;state[type]=index;renderEditorial(type,true,direction);host.querySelector('.editorial-dot[aria-current="true"]').focus({preventScroll:true});}})));
   status.append(element('span',{class:'visually-hidden','aria-live':'polite',text:'آیتم '+formatNumber(state[type]+1)+' از '+formatNumber(items.length)}));
+  const playback=host.querySelector('.autoplay-toggle');if(playback)status.append(playback);
   host.replaceChildren(frame,status);
+  if(animate)animateSlide([card],direction);
 }
 function renderCommunity() {
   $('#about-description').textContent=data.about.description;$('#community-description').textContent=data.community.description;
@@ -242,7 +309,7 @@ function renderMembers() {
       track.append(element('article',{class:'member-card '+group.key+(item.membershipTier?' membership-'+item.membershipTier:'')},[image(item.image,item.imageAlt||item.name,{width:112,height:112,className:'member-image'}),element('h3',{},[name]),element('p',{text:item.role||''}),element('span',{class:'member-badge',text:item.badge||group.badge})]));
     }
     const viewport=element('div',{class:'people-viewport'},[track]);
-    let index=0;
+    let index=0,maxIndex=0,autoDirection=1;
     const status=element('span',{class:'visually-hidden','aria-live':'polite'});
     const previous=element('button',{type:'button',class:'round-button people-previous','aria-label':group.title+'؛ کارت‌های قبلی'},[icon('right')]);
     const next=element('button',{type:'button',class:'round-button people-next','aria-label':group.title+'؛ کارت‌های بعدی'},[icon('left')]);
@@ -251,7 +318,7 @@ function renderMembers() {
       const cardWidth=track.firstElementChild.getBoundingClientRect().width;
       if(!cardWidth)return;
       const gap=parseFloat(getComputedStyle(track).gap)||20,visible=Math.max(1,Math.floor((viewport.clientWidth+gap)/(cardWidth+gap)));
-      const max=Math.max(0,group.items.length-visible);index=Math.min(max,Math.max(0,index+delta));
+      const max=Math.max(0,group.items.length-visible);maxIndex=max;index=Math.min(max,Math.max(0,index+delta));
       track.style.transform='translateX('+(index*(cardWidth+gap))+'px)';previous.disabled=index===0;next.disabled=index===max;
       Array.from(track.children).forEach((card,i)=>{card.inert=i<index||i>=index+visible;card.setAttribute('aria-hidden',card.inert?'true':'false');});
       status.textContent='نمایش عضو '+formatNumber(index+1)+' تا '+formatNumber(Math.min(index+visible,group.items.length))+' از '+formatNumber(group.items.length);
@@ -260,6 +327,7 @@ function renderMembers() {
     carousel.addEventListener('keydown',event=>{if(event.key==='ArrowLeft'||event.key==='ArrowRight'){event.preventDefault();update(event.key==='ArrowLeft'?1:-1);}});
     installSwipe(carousel,()=>update(1),()=>update(-1));
     section.append(heading,more,carousel);mount.append(section);new ResizeObserver(()=>update()).observe(viewport);requestAnimationFrame(()=>update());
+    installAutoplay(carousel,()=>{if(index>=maxIndex)autoDirection=-1;if(index<=0)autoDirection=1;update(autoDirection);},carousel,{canAdvance:()=>maxIndex>0});
   }
 }
 function renderFooter() {
@@ -323,8 +391,14 @@ async function start() {
     renderNav($('#desktop-nav'));renderNav($('#mobile-nav'),true);renderHero();renderEditorial('events');renderEditorial('news');renderCommunity();renderStatistics();renderMembers();renderFooter();
     $('#hero-next').addEventListener('click',()=>stepHero(1));$('#hero-previous').addEventListener('click',()=>stepHero(-1));installSwipe($('.hero-visual'),()=>stepHero(1),()=>stepHero(-1));
     document.querySelectorAll('[data-archive]').forEach(node=>node.addEventListener('click',()=>openArchive(node.dataset.archive)));
-    $('#loading').hidden=true;$('#page-content').hidden=false;document.body.dataset.ready='true';
-    await document.fonts.ready;window.dispatchEvent(new Event('resize'));
+    $('#loading').hidden=true;$('#page-content').hidden=false;
+    if(data.hero.slides.length>1)installAutoplay($('.hero'),()=>stepHero(1),$('.hero-controls'));
+    for(const type of ['news','events'])if(data[type].items.length>1){
+      const host=$('#'+type+'-carousel');
+      installAutoplay(host,()=>{state[type]=(state[type]+1)%data[type].items.length;renderEditorial(type,true);},host.querySelector('.carousel-status'));
+    }
+    await document.fonts.ready;installHeroSizing();window.dispatchEvent(new Event('resize'));
+    document.body.dataset.ready='true';
   } catch(error) {
     $('#loading').hidden=true;const box=$('#load-error');box.hidden=false;
     box.append(element('h2',{text:'محتوای نمونه بارگذاری نشد'}),element('p',{text:location.protocol==='file:'?'فایل را از طریق سرور محلی باز کنید تا JSON خوانده شود. در پوشهٔ دمو این دستور را اجرا کنید:':'فایل data/content.json و مسیر آن را بررسی کنید.'}),element('code',{text:'node serve.cjs'}),element('p',{text:error.message}));document.body.dataset.ready='error';
