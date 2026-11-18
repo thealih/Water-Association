@@ -19,7 +19,8 @@ let browser;
   assert.equal(content.news.items.length,10);assert.equal(content.events.items.length+content.events.archiveItems.length,10);
   assert(content.events.items.every(item=>(item.endDateISO||item.startDateISO)>='2026-11-15'));
   assert(content.events.archiveItems.every(item=>(item.endDateISO||item.startDateISO)<'2026-11-15'));
-  assert.equal(content.members.length,3);assert(content.members.every(g=>g.items.length===10));
+  assert.equal(content.members.length,3);assert(content.members.filter(g=>g.key!=='veterans').every(g=>g.items.length===10));
+  const veterans=content.members.find(g=>g.key==='veterans');assert.equal(veterans.items.length,6);assert.equal(veterans.isDemo,false);assert(veterans.items.every(item=>item.isDemo===false&&item.image.endsWith('.jpg')));assert.deepEqual(veterans.items.map(item=>item.awardYear),[1404,1404,1403,1403,1402,1402]);
   const paths=[];function walk(value){if(typeof value==='string'&&value.startsWith('assets/'))paths.push(value);else if(Array.isArray(value))value.forEach(walk);else if(value&&typeof value==='object')Object.values(value).forEach(walk);}walk(content);for(const file of paths)assert(fs.existsSync(path.join(root,file)),file+' is missing');
   await new Promise(resolve=>server.listen(0,'127.0.0.1',resolve));const url='http://127.0.0.1:'+server.address().port+'/sample-project/';
   browser=await chromium.launch({headless:true,executablePath:process.env.DEMO_CHROME||'C:\\Program Files\\Google\\Chrome\\Application\\chrome.exe',args:['--no-sandbox']});
@@ -70,7 +71,17 @@ let browser;
     await page.locator('[data-archive="events"]').click();assert.equal(await page.locator('#content-dialog .archive-item').count(),10);assert.equal(await page.locator('#content-dialog .archive-item').filter({hasText:'آرشیو رویدادها'}).count(),6);await page.locator('#content-dialog [data-close]').click();
     for(const section of await page.locator('.people-section').all()){
       await section.locator('.people-next').click();await page.waitForTimeout(420);assert.notEqual(await section.locator('.people-track').evaluate(n=>getComputedStyle(n).transform),'matrix(1, 0, 0, 1, 0, 0)');
-      await section.locator('.people-more').click();assert.equal(await page.locator('#content-dialog .archive-item').count(),10);await page.locator('#content-dialog [data-close]').click();
+      const key=await section.getAttribute('data-members'),group=content.members.find(g=>g.key===key);
+      await section.locator('.people-more').click();assert.equal(await page.locator('#content-dialog .archive-item').count(),group.items.length);
+      if(key==='veterans'){
+        assert(!(await page.locator('#dialog-eyebrow').textContent()).includes('نمونه'));
+        await page.locator('#content-dialog .archive-item').last().click();
+        assert.equal(await page.locator('#dialog-heading').textContent(),'مهندس عباس شفیعی');
+        assert((await page.locator('#content-dialog .dialog-body').textContent()).includes('مدیرعامل اسبق شرکت مهندسی آب و فاضلاب کشور'));
+        assert(!(await page.locator('#content-dialog .dialog-note').textContent()).includes('نمونه'));
+        assert((await page.locator('#content-dialog .veteran-portrait').getAttribute('src')).endsWith('/assets/images/veterans/abbas-shafiei.jpg'));
+      }
+      await page.locator('#content-dialog [data-close]').click();
       await section.locator('.people-previous').click();
     }
     await page.locator('#open-search').click();await page.locator('.search-field').fill('هدررفت');assert((await page.locator('#content-dialog .archive-item').count())>0);await page.locator('.search-field').fill('عبارت کاملاً ناموجود ۱۲۳۴۵');assert.equal(await page.locator('#content-dialog .archive-item').count(),0);await page.locator('#content-dialog [data-close]').click();

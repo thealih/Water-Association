@@ -211,14 +211,16 @@ function renderStatistics() {
 }
 function openMember(item,group) {
   const content=dialogContent(item.name,group.title);
-  const picture=image(item.image,item.imageAlt||item.name,{lazy:false,width:112,height:112,className:'member-image'});picture.style.marginInline='auto';content.prepend(picture);
-  content.append(element('p',{class:'dialog-meta',text:item.role||''}),element('p',{class:'dialog-body',text:item.description||'معرفی، فعالیت‌ها و راه‌های ارتباط با این عضو در نسخهٔ کامل وب‌سایت درج خواهد شد.'}),element('p',{class:'dialog-note',text:'نام و تصویر این کارت برای نمونهٔ طراحی است و معرفی عضو واقعی انجمن نیست.'}));
+  const picture=image(item.image,item.imageAlt||item.name,{lazy:false,width:112,height:112,className:'member-image'+(group.key==='veterans'&&item.isDemo===false?' veteran-portrait':'')});picture.style.marginInline='auto';content.prepend(picture);
+  content.append(element('p',{class:'dialog-meta',text:item.role||''}),element('p',{class:'dialog-body',text:item.description||'معرفی، فعالیت‌ها و راه‌های ارتباط با این عضو در نسخهٔ کامل وب‌سایت درج خواهد شد.'}));
+  if(item.isDemo??group.isDemo??true)content.append(element('p',{class:'dialog-note',text:'نام و تصویر این کارت برای نمونهٔ طراحی است و معرفی عضو واقعی انجمن نیست.'}));
+  else if(item.sourceNote)content.append(element('p',{class:'dialog-note',text:item.sourceNote}));
   if(safeURL(item.url))content.append(action('وبگاه عضو',item.url,'button'));
 }
 function openArchive(key) {
   const group=data.members.find(item=>item.key===key),isMembers=Boolean(group),collection=isMembers?group:data[key];
   if(!collection)return;
-  const content=dialogContent(isMembers?group.archiveLabel:collection.archiveLabel||collection.title,isMembers?'فهرست نمونه اعضا':'اخبار و رویدادهای انجمن');
+  const content=dialogContent(isMembers?group.archiveLabel:collection.archiveLabel||collection.title,isMembers?(group.isDemo===false?group.title:'فهرست نمونه اعضا'):'اخبار و رویدادهای انجمن');
   const list=element('div',{class:'archive-list'});
   for(const item of [...collection.items,...(collection.archiveItems||[])]) {
     const detail=(item.role||item.date||'')+(item.eventStatus==='past'?' · آرشیو رویدادها':'');

@@ -1,6 +1,6 @@
 # منابع دارایی‌های دمو
 
-تصاویر صرفاً برای پیش‌نمایش‌اند و به رویداد، فرد یا تأسیسات انجمن منتسب نیستند.
+تصاویر Unsplash زیر صرفاً برای پیش‌نمایش‌اند و به رویداد، فرد یا تأسیسات انجمن منتسب نیستند. عکس‌های پیشکسوتان در انتهای این فهرست جداگانه معرفی شده‌اند.
 
 - water-treatment.jpg: https://images.unsplash.com/photo-1516937941344-00b4e0337589?auto=format&fit=crop&w=1100&q=85
 - river.jpg: https://images.unsplash.com/photo-1437482078695-73f5ca6c96e2?auto=format&fit=crop&w=1100&q=85
@@ -14,3 +14,5 @@
 آیکون‌ها: Simple Icons از Iconify؛ ایتا از aasaam/brand-icons؛ بله از homarr-labs/dashboard-icons.
 قلم Vazirmatn: https://github.com/rastikerdar/vazirmatn — SIL Open Font License 1.1.
 پرتره‌ها و نشانه‌های شرکت‌ها: تصویرسازی SVG اختصاصی برای نمونه.
+
+تصاویر `images/veterans/*.jpg`: عکس‌های اصلی استخراج‌شده از دو فایل PDF و یک فایل پاورپوینت «پیشکسوتان برگزیده» ارائه‌شده توسط کاربر، مربوط به برگزیدگان ۱۴۰۲، ۱۴۰۳ و ۱۴۰۴ انجمن آب و فاضلاب ایران. نام فرد، صفحه یا اسلاید و اثر انگشت فایل منبع در `data/sources/veterans-import.json` ثبت شده است. این شش عکس و معرفی، جایگزین کارت‌های پیشکسوتان نمونه شده‌اند.

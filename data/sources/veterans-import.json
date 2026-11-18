@@ -1,0 +1,74 @@
+{
+  "importedAt": "2026-11-18",
+  "source": "User-provided association award introductions; original portrait images extracted without identity substitution.",
+  "files": [
+    {
+      "name": "پیشکسوتان برگزیده.pdf",
+      "sha256": "cf20613dcf97f4d3ef9e1d48af1bb301e7c293b9dbeb818b2b9363be2b2094d7"
+    },
+    {
+      "name": "پیشکسوتان برگزیده.pptx",
+      "sha256": "167d5a72a9a6ac08b733b4c566c1b8d38d5b400a918408707ad1b3fc2119176c"
+    },
+    {
+      "name": "پیشکسوتان برگزیده (2).pdf",
+      "sha256": "d004046ccd4939671228d9d392cc8d8ae5872714f7830e26e186856752afb9e0"
+    }
+  ],
+  "people": [
+    {
+      "id": "gagik-badalians",
+      "name": "دکتر گاگیک بدلیانس قلی کندی",
+      "sourceFile": "پیشکسوتان برگزیده.pdf",
+      "pageOrSlide": 2,
+      "originalImage": "1404-page-2-img-2.png",
+      "image": "assets/images/veterans/gagik-badalians.jpg",
+      "awardYear": 1404
+    },
+    {
+      "id": "morteza-tavajoh",
+      "name": "مهندس مرتضی توجه",
+      "sourceFile": "پیشکسوتان برگزیده.pdf",
+      "pageOrSlide": 3,
+      "originalImage": "1404-page-3-img-2.png",
+      "image": "assets/images/veterans/morteza-tavajoh.jpg",
+      "awardYear": 1404
+    },
+    {
+      "id": "naser-taleb-bidokhti",
+      "name": "دکتر ناصر طالب بیدختی",
+      "sourceFile": "پیشکسوتان برگزیده.pptx",
+      "pageOrSlide": 2,
+      "originalImage": "image3.png",
+      "image": "assets/images/veterans/naser-taleb-bidokhti.jpg",
+      "awardYear": 1403
+    },
+    {
+      "id": "seyed-hossein-mortazavi",
+      "name": "مهندس سید حسین مرتضوی",
+      "sourceFile": "پیشکسوتان برگزیده.pptx",
+      "pageOrSlide": 3,
+      "originalImage": "image4.png",
+      "image": "assets/images/veterans/seyed-hossein-mortazavi.jpg",
+      "awardYear": 1403
+    },
+    {
+      "id": "mohammad-taghi-monzavi",
+      "name": "دکتر محمدتقی منزوی",
+      "sourceFile": "پیشکسوتان برگزیده (2).pdf",
+      "pageOrSlide": 2,
+      "originalImage": "1402-page-2-img-4.png",
+      "image": "assets/images/veterans/mohammad-taghi-monzavi.jpg",
+      "awardYear": 1402
+    },
+    {
+      "id": "abbas-shafiei",
+      "name": "مهندس عباس شفیعی",
+      "sourceFile": "پیشکسوتان برگزیده (2).pdf",
+      "pageOrSlide": 3,
+      "originalImage": "1402-page-3-img-4.png",
+      "image": "assets/images/veterans/abbas-shafiei.jpg",
+      "awardYear": 1402
+    }
+  ]
+}

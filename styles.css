@@ -1273,7 +1273,20 @@ a {
 }
 
 .member-card.veterans .member-image {
+  object-position: center 25%;
   box-shadow: 0 0 0 3px #f1e3c9, 0 0 0 6px white
+}
+
+.member-card.veterans h3 {
+  white-space: normal;
+}
+
+.content-dialog .veteran-portrait {
+  width: 180px;
+  height: 220px;
+  object-fit: contain;
+  border-radius: 12px;
+  background: transparent;
 }
 
 .people-next,
