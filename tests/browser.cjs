@@ -41,7 +41,21 @@ let browser;
       await page.locator('#open-menu').click();assert(await page.locator('#menu-dialog').isVisible());await page.locator('#mobile-nav a[href$="#news"]').click();assert(!(await page.locator('#menu-dialog').isVisible()));
     }else assert(layout.heroImage.right<=layout.heroTitle.left,'Desktop banner photo must be to the left');
     const original=await page.locator('#hero-title').textContent();await page.locator('#hero-next').click();assert.notEqual(await page.locator('#hero-title').textContent(),original);await page.locator('#hero-previous').click();assert.equal(await page.locator('#hero-title').textContent(),original);
-    const newsTitle=await page.locator('#news-carousel h3').textContent();await page.locator('#news-carousel .editorial-next').click();assert.notEqual(await page.locator('#news-carousel h3').textContent(),newsTitle);await page.locator('#news-carousel .editorial-previous').click();
+    for(const type of ['news','events']){
+      const host=page.locator('#'+type+'-carousel'),frame=host.locator('.editorial-carousel');
+      await frame.scrollIntoViewIfNeeded();await page.mouse.move(0,0);
+      const geometry=await frame.evaluate(n=>{const card=n.querySelector('.story-card').getBoundingClientRect();return {card:card.toJSON(),arrows:[...n.querySelectorAll('.editorial-arrow')].map(a=>({rect:a.getBoundingClientRect().toJSON(),opacity:getComputedStyle(a).opacity}))};});
+      for(const arrow of geometry.arrows)assert(Math.abs(arrow.rect.y+arrow.rect.height/2-(geometry.card.y+geometry.card.height/2))<1,'Editorial arrow must be vertically centered');
+      assert(Math.abs(geometry.arrows[0].rect.x+18-geometry.card.right)<1,'Previous arrow must straddle right card edge');
+      assert(Math.abs(geometry.arrows[1].rect.x+18-geometry.card.left)<1,'Next arrow must straddle left card edge');
+      assert(geometry.arrows.every(a=>Number(a.opacity)===(width<768?1:0)),'Editorial arrows must respect mobile/desktop visibility');
+      await frame.hover();assert.equal(await host.locator('.editorial-next').evaluate(n=>getComputedStyle(n).opacity),'1');
+      assert.equal(await host.locator('.editorial-dot').count(),content[type].items.length);
+      await host.locator('.editorial-dot').nth(1).click();assert.equal(await host.locator('h3').textContent(),content[type].items[1].title);
+      assert.equal(await host.locator('.editorial-dot[aria-current="true"]').count(),1);
+      await host.locator('.editorial-dot').first().click();
+    }
+    const newsTitle=await page.locator('#news-carousel h3').textContent();await page.locator('#news-carousel .editorial-carousel').hover();await page.locator('#news-carousel .editorial-next').click();assert.notEqual(await page.locator('#news-carousel h3').textContent(),newsTitle);await page.locator('#news-carousel .editorial-previous').click();
     await page.locator('[data-archive="news"]').click();assert.equal(await page.locator('#content-dialog .archive-item').count(),10);await page.locator('#content-dialog [data-close]').click();
     await page.locator('#events-carousel .story-link').click();assert.equal(await page.locator('.dialog-content-image').evaluate(n=>getComputedStyle(n).objectFit),'contain');assert(await page.locator('#content-dialog a[href="https://t.me/IRWWA94/523"]').isVisible());assert(!(await page.locator('.dialog-note').textContent()).includes('محتوای نمونه'));await page.locator('#content-dialog [data-close]').click();
     await page.locator('[data-archive="events"]').click();assert.equal(await page.locator('#content-dialog .archive-item').count(),10);assert.equal(await page.locator('#content-dialog .archive-item').filter({hasText:'آرشیو رویدادها'}).count(),6);await page.locator('#content-dialog [data-close]').click();

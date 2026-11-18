@@ -150,7 +150,8 @@ function renderEditorial(type) {
   const frame=element('div',{class:'editorial-carousel',tabindex:'0',role:'region','aria-label':event?'اسلایدر رویدادها':'اسلایدر اخبار'},[card,previous,next]);
   frame.addEventListener('keydown',e=>{if(e.key==='ArrowLeft'||e.key==='ArrowRight'){e.preventDefault();change(e.key==='ArrowLeft'?1:-1);}});
   installSwipe(frame,()=>change(1),()=>change(-1));
-  const status=element('div',{class:'carousel-status','aria-live':'polite'},[element('span',{text:formatNumber(state[type]+1)}),element('span',{class:'status-line',style:'--progress:'+((state[type]+1)/items.length*100)+'%','aria-hidden':'true'}),element('span',{text:formatNumber(items.length)})]);
+  const status=element('div',{class:'carousel-status',role:'group','aria-label':event?'انتخاب رویداد':'انتخاب خبر'},items.map((entry,index)=>element('button',{type:'button',class:'editorial-dot','aria-label':(event?'نمایش رویداد ':'نمایش خبر ')+formatNumber(index+1)+': '+entry.title,'aria-current':index===state[type]?'true':'false',onclick:()=>{state[type]=index;renderEditorial(type);host.querySelector('.editorial-dot[aria-current="true"]').focus({preventScroll:true});}})));
+  status.append(element('span',{class:'visually-hidden','aria-live':'polite',text:'آیتم '+formatNumber(state[type]+1)+' از '+formatNumber(items.length)}));
   host.replaceChildren(frame,status);
 }
 function renderCommunity() {

@@ -763,7 +763,8 @@ a {
 
 .editorial-arrow {
   position: absolute;
-  top: calc(23% - 20px);
+  top: 50%;
+  transform: translateY(-50%);
   width: 36px;
   height: 36px;
   color: var(--ink);
@@ -774,39 +775,61 @@ a {
 }
 
 .editorial-next {
-  inset-inline-end: 10px
+  inset-inline-end: -18px
 }
 
 .editorial-previous {
-  inset-inline-start: 10px
+  inset-inline-start: -18px
 }
 
 .carousel-status {
   display: flex;
   justify-content: center;
   align-items: center;
-  gap: 7px;
+  gap: 2px;
+  flex-wrap: wrap;
   min-height: 32px;
   font-size: 10px;
   color: var(--muted)
 }
 
-.carousel-status .status-line {
-  height: 2px;
-  background: var(--line);
-  width: 32px;
-  position: relative
+.editorial-dot {
+  display: grid;
+  place-items: center;
+  width: 24px;
+  height: 28px;
+  padding: 0;
+  border-radius: 8px;
 }
 
-.carousel-status .status-line:before {
+.editorial-dot::before {
   content: '';
-  position: absolute;
-  inset-inline-start: 0;
-  top: 0;
-  bottom: 0;
+  width: 7px;
+  height: 7px;
+  border-radius: 50%;
+  background: #bdcddd;
+}
+
+.editorial-dot[aria-current=true]::before {
   background: var(--blue);
-  width: var(--progress, 10%);
-  border-radius: 3px
+  transform: scale(1.2);
+}
+
+.editorial-dot:hover::before {
+  background: var(--blue);
+}
+
+@media (min-width: 768px) and (hover: hover) and (pointer: fine) {
+  .editorial-arrow {
+    opacity: 0;
+    pointer-events: none;
+  }
+
+  .editorial-carousel:hover .editorial-arrow,
+  .editorial-carousel:focus-within .editorial-arrow {
+    opacity: 1;
+    pointer-events: auto;
+  }
 }
 
 .section-kicker {
@@ -2154,10 +2177,6 @@ a {
   .event-location {
     display: flex;
     font-size: 10px
-  }
-
-  .editorial-arrow {
-    top: calc(22% - 18px)
   }
 
   .about-panel {
