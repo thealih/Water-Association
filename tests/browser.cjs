@@ -115,14 +115,14 @@ let browser;
   const auto=await browser.newPage({viewport:{width:1440,height:1000}});
   await auto.clock.install({time:new Date('2026-11-15T09:00:00+03:30')});
   await auto.goto(url);await auto.waitForSelector('body[data-ready="true"]');
+  assert.equal(await auto.locator('.autoplay-toggle').count(),0,'Autoplay must have no play/pause buttons');
   for(const selector of ['.hero','#news-carousel','#events-carousel','[data-members="corporate"] .people-carousel','[data-members="individual"] .people-carousel','[data-members="veterans"] .people-carousel']){
     const root=auto.locator(selector);await root.scrollIntoViewIfNeeded();await auto.mouse.move(0,0);await auto.waitForTimeout(100);
     const read=()=>root.evaluate(n=>n.querySelector('.people-track')?.style.transform||n.querySelector('h1,h3').textContent);
     const before=await read();await auto.clock.fastForward(5600);assert.notEqual(await read(),before,'Autoplay must advance '+selector);
-    await root.locator('.autoplay-toggle').click();await auto.evaluate(()=>document.activeElement.blur());await auto.mouse.move(0,0);
-    const paused=await read();await auto.clock.fastForward(11000);assert.equal(await read(),paused,'Pause must stop '+selector);
+    await root.hover();const hovered=await read();await auto.clock.fastForward(11000);assert.equal(await read(),hovered,'Hover must pause '+selector);
   }
-  await auto.locator('.hero').scrollIntoViewIfNeeded();await auto.locator('.hero .autoplay-toggle').click();await auto.evaluate(()=>document.activeElement.blur());await auto.mouse.move(0,0);await auto.waitForTimeout(100);
+  await auto.locator('.hero').scrollIntoViewIfNeeded();await auto.evaluate(()=>document.activeElement.blur());await auto.mouse.move(0,0);await auto.waitForTimeout(100);
   let autoTitle=await auto.locator('#hero-title').textContent();await auto.clock.fastForward(5600);assert.notEqual(await auto.locator('#hero-title').textContent(),autoTitle,'Resume must restart autoplay');
   await auto.locator('.hero').hover();autoTitle=await auto.locator('#hero-title').textContent();await auto.clock.fastForward(11000);assert.equal(await auto.locator('#hero-title').textContent(),autoTitle,'Hover must pause autoplay');
   await auto.mouse.move(0,0);await auto.locator('#open-account').click();autoTitle=await auto.locator('#hero-title').textContent();await auto.clock.fastForward(5600);assert.equal(await auto.locator('#hero-title').textContent(),autoTitle,'Open dialogs must pause autoplay');await auto.locator('#content-dialog [data-close]').click();
@@ -131,6 +131,7 @@ let browser;
     const heights=[];
     for(let i=0;i<content.hero.slides.length;i++){await auto.locator('#hero-dots button').nth(i).click();heights.push(await auto.locator('.hero').evaluate(n=>n.getBoundingClientRect().height));}
     assert(Math.max(...heights)-Math.min(...heights)<1,'Resized hero must remain stable at '+width);
+    if(width===390||width===1440){await auto.locator('#hero-dots button').first().click();await auto.locator('.hero').screenshot({path:path.join(artifacts,width===390?'hero-mobile.png':'hero-desktop.png'),animations:'disabled'});}
   }
   await auto.emulateMedia({reducedMotion:'reduce'});await auto.evaluate(()=>document.activeElement.blur());await auto.mouse.move(0,0);autoTitle=await auto.locator('#hero-title').textContent();await auto.clock.fastForward(11000);assert.equal(await auto.locator('#hero-title').textContent(),autoTitle);await auto.close();
   // Check count-up progression, completion, one-time playback and reduced motion.

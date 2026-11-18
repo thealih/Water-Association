@@ -57,9 +57,9 @@
   "telegramContent": true,
   "eventArchiving": true,
   "posterContain": true,
-  "browserErrors": [],
   "stableHeroHeight": true,
   "allCarouselsAutoplay": true,
   "pauseAndResume": true,
-  "responsiveHeroSizing": true
+  "responsiveHeroSizing": true,
+  "browserErrors": []
 }

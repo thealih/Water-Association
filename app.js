@@ -3,7 +3,6 @@
 // All content comes from data/content.json. No framework or build step is needed.
 const $ = selector => document.querySelector(selector);
 const ICONS = {
-  pause:'<path d="M9 5v14M15 5v14"/>',play:'<path d="m9 5 11 7-11 7Z"/>',
   left:'<path d="m14 6-6 6 6 6"/>',right:'<path d="m10 6 6 6-6 6"/>',down:'<path d="m6 9 6 6 6-6"/>',
   search:'<circle cx="10.5" cy="10.5" r="6.5"/><path d="m16 16 5 5"/>',user:'<circle cx="12" cy="8" r="4"/><path d="M4 21v-2a8 8 0 0 1 16 0v2"/>',
   menu:'<path d="M4 6h16M4 12h16M4 18h16"/>',close:'<path d="m6 6 12 12M18 6 6 18"/>',
@@ -31,31 +30,22 @@ function animateSlide(nodes,direction=1) {
   }
 }
 
-function installAutoplay(root,advance,controls=root,{canAdvance=()=>true,delay=5500}={}) {
-  let timer,visible=false,paused=false;
-  const toggle=element('button',{type:'button',class:'autoplay-toggle','aria-label':'توقف پخش خودکار','aria-pressed':'false',title:'توقف پخش خودکار'});
-  function updateToggle(){
-    const label=paused?'شروع پخش خودکار':'توقف پخش خودکار';
-    toggle.setAttribute('aria-label',label);toggle.setAttribute('aria-pressed',String(paused));toggle.title=label;
-    toggle.replaceChildren(icon(paused?'play':'pause'));
-  }
+function installAutoplay(root,advance,{canAdvance=()=>true,delay=5500}={}) {
+  let timer,visible=false;
   function schedule(){
     clearTimeout(timer);
-    if(!paused&&!reducedMotion.matches&&!document.hidden&&visible)timer=setTimeout(()=>{
+    if(!reducedMotion.matches&&!document.hidden&&visible)timer=setTimeout(()=>{
       const hovering=matchMedia('(hover: hover)').matches&&root.matches(':hover');
       if(!hovering&&!root.contains(document.activeElement)&&!document.querySelector('dialog[open]')&&canAdvance())advance();
       schedule();
     },delay);
   }
-  toggle.addEventListener('click',()=>{paused=!paused;updateToggle();schedule();});
-  updateToggle();controls.append(toggle);
   for(const event of ['pointerdown','click','keydown','focusout'])root.addEventListener(event,schedule);
   root.addEventListener('pointerenter',event=>{if(event.pointerType==='mouse')clearTimeout(timer);});
   root.addEventListener('pointerleave',schedule);
   root.addEventListener('focusin',()=>clearTimeout(timer));
   document.addEventListener('visibilitychange',schedule);
-  reducedMotion.addEventListener('change',()=>{toggle.hidden=reducedMotion.matches;schedule();});
-  toggle.hidden=reducedMotion.matches;
+  reducedMotion.addEventListener('change',schedule);
   new IntersectionObserver(entries=>{visible=entries[0].isIntersecting;schedule();},{threshold:.1}).observe(root);
 }
 
@@ -224,7 +214,6 @@ function renderEditorial(type,animate=false,direction=1) {
   installSwipe(frame,()=>change(1),()=>change(-1));
   const status=element('div',{class:'carousel-status',role:'group','aria-label':event?'انتخاب رویداد':'انتخاب خبر'},items.map((entry,index)=>element('button',{type:'button',class:'editorial-dot','aria-label':(event?'نمایش رویداد ':'نمایش خبر ')+formatNumber(index+1)+': '+entry.title,'aria-current':index===state[type]?'true':'false',onclick:()=>{const direction=index>=state[type]?1:-1;state[type]=index;renderEditorial(type,true,direction);host.querySelector('.editorial-dot[aria-current="true"]').focus({preventScroll:true});}})));
   status.append(element('span',{class:'visually-hidden','aria-live':'polite',text:'آیتم '+formatNumber(state[type]+1)+' از '+formatNumber(items.length)}));
-  const playback=host.querySelector('.autoplay-toggle');if(playback)status.append(playback);
   host.replaceChildren(frame,status);
   if(animate)animateSlide([card],direction);
 }
@@ -327,7 +316,7 @@ function renderMembers() {
     carousel.addEventListener('keydown',event=>{if(event.key==='ArrowLeft'||event.key==='ArrowRight'){event.preventDefault();update(event.key==='ArrowLeft'?1:-1);}});
     installSwipe(carousel,()=>update(1),()=>update(-1));
     section.append(heading,more,carousel);mount.append(section);new ResizeObserver(()=>update()).observe(viewport);requestAnimationFrame(()=>update());
-    installAutoplay(carousel,()=>{if(index>=maxIndex)autoDirection=-1;if(index<=0)autoDirection=1;update(autoDirection);},carousel,{canAdvance:()=>maxIndex>0});
+    installAutoplay(carousel,()=>{if(index>=maxIndex)autoDirection=-1;if(index<=0)autoDirection=1;update(autoDirection);},{canAdvance:()=>maxIndex>0});
   }
 }
 function renderFooter() {
@@ -392,10 +381,10 @@ async function start() {
     $('#hero-next').addEventListener('click',()=>stepHero(1));$('#hero-previous').addEventListener('click',()=>stepHero(-1));installSwipe($('.hero-visual'),()=>stepHero(1),()=>stepHero(-1));
     document.querySelectorAll('[data-archive]').forEach(node=>node.addEventListener('click',()=>openArchive(node.dataset.archive)));
     $('#loading').hidden=true;$('#page-content').hidden=false;
-    if(data.hero.slides.length>1)installAutoplay($('.hero'),()=>stepHero(1),$('.hero-controls'));
+    if(data.hero.slides.length>1)installAutoplay($('.hero'),()=>stepHero(1));
     for(const type of ['news','events'])if(data[type].items.length>1){
       const host=$('#'+type+'-carousel');
-      installAutoplay(host,()=>{state[type]=(state[type]+1)%data[type].items.length;renderEditorial(type,true);},host.querySelector('.carousel-status'));
+      installAutoplay(host,()=>{state[type]=(state[type]+1)%data[type].items.length;renderEditorial(type,true);});
     }
     await document.fonts.ready;installHeroSizing();window.dispatchEvent(new Event('resize'));
     document.body.dataset.ready='true';
