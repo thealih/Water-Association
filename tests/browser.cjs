@@ -31,6 +31,15 @@ let browser;
     assert.equal(await page.locator('.people-section').count(),3);assert.equal(await page.locator('.stat-card').count(),10);assert.equal(await page.locator('.shortcut').count(),11);
     const layout=await page.evaluate(()=>({width:innerWidth,scroll:document.documentElement.scrollWidth,font:document.fonts.check('14px Vazirmatn'),heroImage:document.querySelector('.hero-visual').getBoundingClientRect().toJSON(),heroTitle:document.querySelector('.hero-copy').getBoundingClientRect().toJSON()}));
     assert(layout.scroll<=layout.width+1,'Horizontal overflow at '+width+': '+layout.scroll);assert(layout.font,'Local font not loaded');
+    if(width>=768){
+      const menus=page.locator('#desktop-nav details'),first=menus.first();
+      await first.locator('summary').hover();assert(await first.getAttribute('open')!==null,'Hover must open desktop submenu');
+      const child=first.locator('.nav-dropdown button').first(),box=await child.boundingBox();
+      await page.mouse.move(box.x+box.width/2,box.y+box.height/2,{steps:12});assert(await child.isVisible(),'Submenu must stay open across the gap');
+      await menus.nth(1).locator('summary').hover();assert.equal(await first.getAttribute('open'),null);
+      await page.mouse.move(0,0);assert.equal(await menus.nth(1).getAttribute('open'),null);
+      await first.locator('summary').focus();await page.keyboard.press('Enter');assert(await child.isVisible());await page.keyboard.press('Escape');assert.equal(await first.getAttribute('open'),null);
+    }
     if(width<768){assert(layout.heroImage.bottom<=layout.heroTitle.top,'Mobile banner image must precede text');
       for(const section of await page.locator('.people-section').all()){
         const geometry=await section.evaluate(n=>{const view=n.querySelector('.people-viewport').getBoundingClientRect(),more=n.querySelector('.people-more').getBoundingClientRect(),title=n.querySelector('.people-heading'),r=document.createRange();r.selectNodeContents(title);const text=r.getBoundingClientRect(),heading=title.getBoundingClientRect();return {view:view.toJSON(),more:more.toJSON(),titleGap:heading.right-text.right,arrows:[...n.querySelectorAll('.people-next,.people-previous')].map(x=>({rect:x.getBoundingClientRect().toJSON(),visible:getComputedStyle(x).display!=='none'}))};});
@@ -38,7 +47,7 @@ let browser;
         assert(geometry.arrows.every(a=>a.visible&&a.rect.width===40));
         const [previous,next]=geometry.arrows;assert(Math.abs(next.rect.x+20-geometry.view.x)<1);assert(Math.abs(previous.rect.x+20-geometry.view.right)<1);
       }
-      await page.locator('#open-menu').click();assert(await page.locator('#menu-dialog').isVisible());await page.locator('#mobile-nav a[href$="#news"]').click();assert(!(await page.locator('#menu-dialog').isVisible()));
+      await page.locator('#open-menu').click();assert(await page.locator('#menu-dialog').isVisible());await page.locator('#mobile-nav details summary').first().click();assert(await page.locator('#mobile-nav .mobile-submenu').first().isVisible());await page.locator('#mobile-nav a[href$="#news"]').click();assert(!(await page.locator('#menu-dialog').isVisible()));
     }else assert(layout.heroImage.right<=layout.heroTitle.left,'Desktop banner photo must be to the left');
     const original=await page.locator('#hero-title').textContent();await page.locator('#hero-next').click();assert.notEqual(await page.locator('#hero-title').textContent(),original);await page.locator('#hero-previous').click();assert.equal(await page.locator('#hero-title').textContent(),original);
     for(const type of ['news','events']){
@@ -65,12 +74,24 @@ let browser;
       await section.locator('.people-previous').click();
     }
     await page.locator('#open-search').click();await page.locator('.search-field').fill('هدررفت');assert((await page.locator('#content-dialog .archive-item').count())>0);await page.locator('.search-field').fill('عبارت کاملاً ناموجود ۱۲۳۴۵');assert.equal(await page.locator('#content-dialog .archive-item').count(),0);await page.locator('#content-dialog [data-close]').click();
+    for(const card of await page.locator('.stat-card').all())await card.scrollIntoViewIfNeeded();
+    await page.waitForFunction(values=>[...document.querySelectorAll('.stat-counter')].every((node,i)=>node.textContent===new Intl.NumberFormat('fa-IR').format(values[i])),content.statistics.items.map(item=>item.value));
     await page.evaluate(()=>window.scrollTo(0,document.body.scrollHeight));await page.waitForTimeout(300);
     assert.equal(await page.locator('.footer-socials .social-square').count(),7);assert(await page.locator('.trust-caption').isVisible());
     const broken=await page.locator('img').evaluateAll(images=>images.filter(n=>n.dataset.fallback||(n.complete&&!n.naturalWidth)).map(n=>n.src));assert.deepEqual(broken,[],'Images failed at '+width);
     if(width===1440||width===390){await page.evaluate(()=>{document.activeElement?.blur();window.scrollTo({top:0,behavior:"instant"});});await page.waitForTimeout(200);if(width===1440)await page.screenshot({path:path.join(artifacts,'desktop-preview.png')});await page.screenshot({path:path.join(artifacts,width===1440?'desktop.png':'mobile.png'),fullPage:true});await page.locator('.member-sections').screenshot({path:path.join(artifacts,width===1440?'desktop-members.png':'mobile-members.png')});}
     results.push({width,overflow:false,sections:3,json:true,sliders:true,archives:true,search:true,images:true});await context.close();
   }
+  // Check count-up progression, completion, one-time playback and reduced motion.
+  const statsPage=await browser.newPage({viewport:{width:1440,height:900}});
+  await statsPage.goto(url);await statsPage.waitForSelector('body[data-ready="true"]');
+  const target=content.statistics.items[0].value,formatted=new Intl.NumberFormat('fa-IR').format(target);
+  assert.equal(await statsPage.locator('.stat-counter').first().textContent(),'۰');
+  await statsPage.locator('.stat-card').first().scrollIntoViewIfNeeded();
+  await statsPage.waitForFunction(final=>{const text=document.querySelector('.stat-counter').textContent;return text!=='۰'&&text!==final;},formatted);
+  await statsPage.waitForFunction(final=>document.querySelector('.stat-counter').textContent===final,formatted);
+  await statsPage.evaluate(()=>window.scrollTo({top:0,behavior:'instant'}));await statsPage.locator('.stat-card').first().scrollIntoViewIfNeeded();assert.equal(await statsPage.locator('.stat-counter').first().textContent(),formatted);
+  await statsPage.emulateMedia({reducedMotion:'reduce'});await statsPage.reload();await statsPage.waitForSelector('body[data-ready="true"]');assert.equal(await statsPage.locator('.stat-counter').first().textContent(),formatted);await statsPage.close();
   // Prove new JSON items render without changing HTML or JavaScript.
   const context=await browser.newContext({viewport:{width:1440,height:900}}),page=await context.newPage(),modified=structuredClone(content);
   modified.news.items.push({...modified.news.items[0],id:'news-11',title:'خبر افزوده‌شده فقط با JSON'});

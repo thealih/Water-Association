@@ -90,7 +90,14 @@ function renderNav(container,mobile=false) {
       for (const child of item.children) list.append(element('button',{type:'button',text:child.label,onclick:()=>demoPage(child.label)}));
       details.append(list);details.addEventListener('toggle',()=>{
         if(details.open)container.querySelectorAll('details[open]').forEach(other=>{if(other!==details)other.open=false;});
-      });container.append(details);
+      });
+      if(!mobile){
+        details.addEventListener('pointerenter',event=>{if(event.pointerType==='mouse'&&matchMedia('(hover: hover)').matches)details.open=true;});
+        details.addEventListener('pointerleave',event=>{if(event.pointerType==='mouse')details.open=false;});
+        details.addEventListener('focusout',event=>{if(!details.contains(event.relatedTarget)&&!details.matches(':hover'))details.open=false;});
+        details.addEventListener('keydown',event=>{if(event.key==='Escape'){event.preventDefault();details.open=false;details.querySelector('summary').focus();}});
+      }
+      container.append(details);
     } else {
       const link=action(item.label,item.target,mobile?'mobile-nav-link':'nav-link',()=>demoPage(item.label));
       if(item.target==='#home')link.setAttribute('aria-current','page');
@@ -172,7 +179,35 @@ function renderCommunity() {
 }
 function renderStatistics() {
   $('#statistics-description').textContent=data.statistics.description||'';
-  $('#statistics-grid').replaceChildren(...data.statistics.items.map(item=>element('div',{class:'stat-card'},[element('strong',{class:'stat-value',text:formatNumber(item.value)}),element('span',{class:'stat-label',text:item.label})])));
+  const motion=matchMedia('(prefers-reduced-motion: reduce)');
+  const counters=[];
+  $('#statistics-grid').replaceChildren(...data.statistics.items.map(item=>{
+    const numeric=typeof item.value==='number'&&Number.isFinite(item.value)&&item.value>0;
+    const animate=numeric&&!motion.matches&&'IntersectionObserver' in window;
+    const value=element('span',{class:'stat-counter','aria-hidden':'true',text:formatNumber(animate?0:item.value)});
+    const card=element('div',{class:'stat-card'},[element('strong',{class:'stat-value'},[value,element('span',{class:'visually-hidden',text:formatNumber(item.value)})]),element('span',{class:'stat-label',text:item.label})]);
+    if(animate)counters.push({card,value,target:item.value});
+    return card;
+  }));
+  if(!counters.length)return;
+  const pending=new Map(counters.map(counter=>[counter.card,counter]));
+  const observer=new IntersectionObserver(entries=>{
+    for(const entry of entries){
+      if(!entry.isIntersecting)continue;
+      observer.unobserve(entry.target);
+      const counter=pending.get(entry.target);pending.delete(entry.target);
+      let started;
+      function tick(now){
+        started??=now;
+        const progress=motion.matches?1:Math.min(1,(now-started)/1600);
+        counter.value.textContent=formatNumber(Math.round(counter.target*(1-Math.pow(1-progress,3))));
+        if(progress<1)requestAnimationFrame(tick);
+      }
+      requestAnimationFrame(tick);
+    }
+    if(!pending.size)observer.disconnect();
+  },{threshold:.25});
+  counters.forEach(counter=>observer.observe(counter.card));
 }
 function openMember(item,group) {
   const content=dialogContent(item.name,group.title);

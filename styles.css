@@ -407,6 +407,14 @@ a {
   font-size: 12px
 }
 
+.nav-dropdown::before {
+  content: '';
+  position: absolute;
+  top: -4px;
+  inset-inline: 0;
+  height: 4px;
+}
+
 .nav-dropdown button:hover {
   background: var(--pale);
   color: var(--blue)
@@ -1132,6 +1140,7 @@ a {
   font-size: 31px;
   font-weight: 750;
   line-height: 1.4;
+  font-variant-numeric: tabular-nums;
 }
 
 .stat-label {

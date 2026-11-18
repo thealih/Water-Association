@@ -1,5 +1,5 @@
 {
-  "_readme": "خبرها، رویدادها، پوسترها و پیوندهای تأییدشده از کانال https://t.me/IRWWA94 گردآوری و خلاصه‌نویسی شده‌اند. دو اسلاید اولیه و تصاویر کاربر حفظ شده‌اند. آمار نامعلوم با — و کارت‌های اعضا با برچسب نمونه مشخص‌اند. این یک نسخه ذخیره‌شده است و به‌روزرسانی خودکار از تلگرام انجام نمی‌شود. راهنما: CONTENT.md و data/sources/README.md.",
+  "_readme": "خبرها، رویدادها، پوسترها و پیوندهای تأییدشده از کانال https://t.me/IRWWA94 گردآوری و خلاصه‌نویسی شده‌اند. دو اسلاید اولیه و تصاویر کاربر حفظ شده‌اند. آمار و کارت‌های اعضا نمونهٔ نمایشی هستند. این یک نسخه ذخیره‌شده است و به‌روزرسانی خودکار از تلگرام انجام نمی‌شود. راهنما: CONTENT.md و data/sources/README.md.",
   "site": {
     "name": "انجمن آب و فاضلاب ایران",
     "demoDisclaimer": "خبرها، رویدادها و پوسترها از کانال انجمن تهیه شده‌اند؛ کارت‌های اعضا همچنان نمونهٔ طراحی‌اند.",
@@ -643,67 +643,67 @@
     ]
   },
   "statistics": {
-    "description": "آمار رسمی انجمن پس از دریافت اطلاعات تأییدشده تکمیل می‌شود.",
+    "description": "اعداد این بخش صرفاً نمونهٔ نمایشی هستند و آمار رسمی انجمن نیستند.",
     "items": [
       {
         "id": "members",
         "label": "اعضای حقیقی انجمن",
-        "value": "—",
-        "sourceStatus": "awaiting-official-count"
+        "value": 1250,
+        "sourceStatus": "demo"
       },
       {
         "id": "corporate",
         "label": "اعضای حقوقی انجمن",
-        "value": "—",
-        "sourceStatus": "awaiting-official-count"
+        "value": 85,
+        "sourceStatus": "demo"
       },
       {
         "id": "congresses",
         "label": "تعداد همایش‌ها و کنگره‌ها",
-        "value": "—",
-        "sourceStatus": "awaiting-official-count"
+        "value": 24,
+        "sourceStatus": "demo"
       },
       {
         "id": "meetings",
         "label": "تعداد نشست های تخصصی",
-        "value": "—",
-        "sourceStatus": "awaiting-official-count"
+        "value": 180,
+        "sourceStatus": "demo"
       },
       {
         "id": "competitions",
         "label": "تعداد مسابقات علمی",
-        "value": "—",
-        "sourceStatus": "awaiting-official-count"
+        "value": 12,
+        "sourceStatus": "demo"
       },
       {
         "id": "workshops",
         "label": "تعداد کارگاه‌های آموزشی",
-        "value": "—",
-        "sourceStatus": "awaiting-official-count"
+        "value": 96,
+        "sourceStatus": "demo"
       },
       {
         "id": "exhibitions",
         "label": "تعداد غرفه‌های نمایشگاهی",
-        "value": "—",
-        "sourceStatus": "awaiting-official-count"
+        "value": 38,
+        "sourceStatus": "demo"
       },
       {
         "id": "representatives",
         "label": "تعداد نمایندگان استانی",
-        "value": "—",
-        "sourceStatus": "awaiting-official-count"
+        "value": 31,
+        "sourceStatus": "demo"
       },
       {
         "id": "committees",
         "label": "کمیته‌های تخصصی",
-        "value": "—",
-        "sourceStatus": "awaiting-official-count"
+        "value": 14,
+        "sourceStatus": "demo"
       },
       {
         "id": "sessions",
         "label": "تعداد جلسات مدیریتی",
-        "value": "—",
-        "sourceStatus": "awaiting-official-count"
+        "value": 240,
+        "sourceStatus": "demo"
       }
     ]
   },
